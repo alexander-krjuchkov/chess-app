@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import { Chess } from 'chess.js';
+import { Chess, QUEEN } from 'chess.js';
+import { delay } from './utils';
 
 export function App() {
     const [, setMoves] = useState<string[]>([]);
@@ -10,36 +11,41 @@ export function App() {
         const game = gameRef.current;
         try {
             game.move(move);
-        } catch {
-            return false;
+        } catch (e) {
+            if (e instanceof Error && e.message.includes('Invalid move')) {
+                return false;
+            }
+            throw e;
         }
         setMoves(game.history());
         return true;
     }
 
-    function makeRandomMove() {
+    async function makeComputerMove() {
         const game = gameRef.current;
-        const possibleMoves = game.moves();
-        if (game.isGameOver() || game.isDraw() || possibleMoves.length === 0) {
-            // exit if the game is over
+        if (game.isGameOver()) {
             return;
         }
+
+        await delay(200);
+
+        const possibleMoves = game.moves();
         const randomIndex = Math.floor(Math.random() * possibleMoves.length);
-        makeAMove(possibleMoves[randomIndex]);
+        const randomMove = possibleMoves[randomIndex];
+        makeAMove(randomMove);
     }
 
     function onDrop(sourceSquare: string, targetSquare: string) {
-        const moveResult = makeAMove({
+        const isValidMove = makeAMove({
             from: sourceSquare,
             to: targetSquare,
-            promotion: 'q', // always promote to a queen for example simplicity
+            promotion: QUEEN,
         });
 
-        if (!moveResult) {
-            // illegal move
+        if (!isValidMove) {
             return false;
         }
-        setTimeout(makeRandomMove, 200);
+        makeComputerMove();
         return true;
     }
 
