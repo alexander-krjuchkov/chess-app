@@ -50,10 +50,12 @@ export function App() {
     }
 
     return (
-        <Chessboard
-            position={gameRef.current.fen()}
-            onPieceDrop={onDrop}
-            autoPromoteToQueen={true}
-        />
+        <div style={{ maxWidth: '560px' }}>
+            <Chessboard
+                position={gameRef.current.fen()}
+                onPieceDrop={onDrop}
+                autoPromoteToQueen={true}
+            />
+        </div>
     );
 }
