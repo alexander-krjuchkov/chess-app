@@ -49,5 +49,11 @@ export function App() {
         return true;
     }
 
-    return <Chessboard position={gameRef.current.fen()} onPieceDrop={onDrop} />;
+    return (
+        <Chessboard
+            position={gameRef.current.fen()}
+            onPieceDrop={onDrop}
+            autoPromoteToQueen={true}
+        />
+    );
 }
