@@ -3,6 +3,16 @@ import { Chessboard } from 'react-chessboard';
 import { Chess, QUEEN } from 'chess.js';
 import { delay } from './utils';
 
+async function getNextMove(moves: string[]): Promise<string | undefined> {
+    const response = await fetch('/api/game/move', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ moves }),
+    });
+    const { nextMove } = await response.json();
+    return nextMove;
+}
+
 export function App() {
     const [, setMoves] = useState<string[]>([]);
     const gameRef = useRef(new Chess());
@@ -29,10 +39,11 @@ export function App() {
 
         await delay(200);
 
-        const possibleMoves = game.moves();
-        const randomIndex = Math.floor(Math.random() * possibleMoves.length);
-        const randomMove = possibleMoves[randomIndex];
-        makeAMove(randomMove);
+        const nextMove = await getNextMove(game.history());
+
+        if (nextMove) {
+            makeAMove(nextMove);
+        }
     }
 
     function onDrop(sourceSquare: string, targetSquare: string) {
