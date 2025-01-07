@@ -88,10 +88,10 @@ jobs:
         echo "FRONTEND_IMAGE=${{ vars.FRONTEND_IMAGE }}" >> .env
         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
 
-    - name: Copy .env file to remote server
+    - name: Copy .env and docker-compose.prod.yml to remote server
       run: |
         ssh "$USER@$IP" "mkdir -p /app"
-        scp ./.env "$USER@$IP":/app
+        scp ./.env ./docker-compose.prod.yml "$USER@$IP":/app
 
     - name: Deploy application on remote server
       env:
