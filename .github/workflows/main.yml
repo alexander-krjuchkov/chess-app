@@ -3,10 +3,30 @@ on:
   push:
     branches:
       - master
-jobs:
-  dummy:
-    runs-on: ubuntu-22.04
 
+env:
+  node_version: 22.12.0
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-24.04
     steps:
-    - name: Echo github.repository
-      run: echo ${{ github.repository }}
+    - name: Checkout Repository
+      uses: actions/checkout@v4.2.2
+
+    - name: Set up Node.js ${{ env.node_version }}
+      uses: actions/setup-node@v4.1.0
+      with:
+        node-version: ${{ env.node_version }}
+
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm i
+
+    - name: Execute unit tests
+      working-directory: ./backend
+      run: npm run test
+
+    - name: Execute end-to-end tests
+      working-directory: ./backend
+      run: npm run test:e2e
