@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    image: ${CONTAINER_REGISTRY_HOST:?error}/${BACKEND_IMAGE:?error}
+    restart: unless-stopped
+    environment:
+      PORT: 8000
+    volumes:
+      - ./data/source:/app/data/source
+      - ./data/config:/app/data/config
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    image: ${CONTAINER_REGISTRY_HOST:?error}/${FRONTEND_IMAGE:?error}
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      DOMAIN: ${DOMAIN:?error}
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:
