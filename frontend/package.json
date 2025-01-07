@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "author": "Alexander Kryuchkov <alexander.v.kryuchkov@yandex.ru>",
   "type": "module",
+  "license": "ISC",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
