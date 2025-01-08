@@ -1,15 +1,15 @@
 import { ReactNode, useRef, useState } from 'react';
 import { Chess, DEFAULT_POSITION, QUEEN } from 'chess.js';
 import { delay } from './utils';
-import { getNextMove } from './api';
+import { getComputerMove } from './api';
 import { GameContext } from './GameContext';
 
 export function GameProvider({ children }: { children: ReactNode }) {
     const [moves, setMoves] = useState<string[]>([]);
-    const [fen, setFen] = useState<string>(DEFAULT_POSITION);
+    const [fenPosition, setFenPosition] = useState<string>(DEFAULT_POSITION);
     const gameRef = useRef(new Chess());
 
-    function makeAMove(move: Parameters<Chess['move']>[0]) {
+    function makeMove(move: Parameters<Chess['move']>[0]) {
         const game = gameRef.current;
         try {
             game.move(move);
@@ -20,7 +20,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
             throw e;
         }
         setMoves(game.history());
-        setFen(game.fen());
+        setFenPosition(game.fen());
         return true;
     }
 
@@ -32,15 +32,15 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
         await delay(200);
 
-        const nextMove = await getNextMove(game.history());
+        const nextMove = await getComputerMove(game.history());
 
         if (nextMove) {
-            makeAMove(nextMove);
+            makeMove(nextMove);
         }
     }
 
-    function onDrop(sourceSquare: string, targetSquare: string) {
-        const isValidMove = makeAMove({
+    function handlePieceDrop(sourceSquare: string, targetSquare: string) {
+        const isValidMove = makeMove({
             from: sourceSquare,
             to: targetSquare,
             promotion: QUEEN,
@@ -54,7 +54,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     }
 
     return (
-        <GameContext.Provider value={{ moves, fen, onDrop }}>
+        <GameContext.Provider value={{ moves, fenPosition, handlePieceDrop }}>
             {children}
         </GameContext.Provider>
     );

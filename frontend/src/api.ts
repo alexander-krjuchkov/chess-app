@@ -1,6 +1,6 @@
 type NextMoveResponse = { nextMove?: string };
 
-export async function getNextMove(
+export async function getComputerMove(
     moves: string[],
 ): Promise<string | undefined> {
     const response = await fetch('/api/game/move', {

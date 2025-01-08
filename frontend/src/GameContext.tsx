@@ -2,8 +2,8 @@ import { createContext, useContext } from 'react';
 
 type GameContextProps = {
     moves: string[];
-    fen: string;
-    onDrop: (sourceSquare: string, targetSquare: string) => boolean;
+    fenPosition: string;
+    handlePieceDrop: (sourceSquare: string, targetSquare: string) => boolean;
 };
 
 export const GameContext = createContext<GameContextProps | null>(null);
