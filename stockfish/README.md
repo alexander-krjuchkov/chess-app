@@ -1,58 +1,148 @@
-# Docker Image for Stockfish
+# Docker image for stockfish
 
-## How to Use This Image
+## Getting started
 
-Follow these steps to build and run the Docker image:
+### Preparation
 
-1. **Build the Image:**
-
-    ```
-    docker build --tag stockfish-demo-image .
-    ```
-
-2. **(Optional) View the Image Size:**
+1. **Build the image:**
 
     ```
-    docker inspect -f "{{ .Size }}" stockfish-demo-image | numfmt --to=si
+    docker build --tag engine-image .
+    ```
+
+2. **(Optional) View the image size:**
+
+    ```
+    docker inspect -f "{{ .Size }}" engine-image | numfmt --to=si
     ```
 
     *(See [this gist](https://gist.github.com/MichaelSimons/fb588539dcefd9b5fdf45ba04c302db6) for more details.)*
 
-3. **Run a New Container:**
+### Interaction
+
+You can choose one of the following options.
+
+* **Explore the engine inside the running container**
+
+    1. **Run new container:**
+
+        ```
+        docker run --rm -d --name engine-container engine-image
+        ```
+
+    2. **Enter stockfish interface:**
+
+        ```
+        docker exec -it engine-container stockfish
+        ```
+
+    3. **Try these commands:**
+
+        ```
+        > uci
+        > isready
+        > position startpos
+        > go depth 1
+        ```
+
+        For more information on commands, see the [Stockfish UCI & Commands wiki](https://github.com/official-stockfish/Stockfish/wiki/UCI-&-Commands)
+
+    4. **Exit stockfish interface:**
+
+        ```
+        > quit
+        ```
+
+* **Experience the http interface for getting the best move locally**
+
+    1. **Run new container:**
+
+        ```
+        docker run --rm -d -p 5000:5000 --name engine-container engine-image
+        ```
+
+    2. **Send requests to the interface**
+
+        Request example:
+
+        ```
+        curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
+        ```
+
+* **Develop the HTTP interface locally**
+
+    1. **Run new container:**
+
+        ```
+        docker run --rm -d -p 5000:5000 --name engine-container engine-image
+        ```
+
+    2. **Install project dependencies:**
+
+        ```
+        npm i
+        ```
+
+    3. **Start http server:**
+
+        ```
+        ENGINE_CMD='docker exec -i engine-container stockfish' npm run dev
+        ```
+
+    4. **Send request to the interface:**
+
+        ```
+        curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
+        ```
+
+### Post-Interaction
+
+1. **Stop the running container:**
+
+    ❗ **_Don't forget to stop the container_**
 
     ```
-    docker run --rm -d --name stockfish-demo-container stockfish-demo-image
+    docker stop engine-container
     ```
 
-4. **Enter the Running Container:**
+2. **Remove the built image:**
 
     ```
-    docker exec -it stockfish-demo-container /bin/bash
+    docker rmi engine-image
     ```
 
-5. **Test Stockfish Inside the Running Container:**
+## Environment variables
 
-    Start Stockfish and use the following commands:
+The following environment variables can be optionally set
 
-    ```
-    stockfish
-    > uci
-    > isready
-    > position startpos
-    > go depth 1
-    > quit
-    ```
+* `PORT` - http server port. Default is 5000.
 
-    *(For more information on commands, see the [Stockfish UCI & Commands wiki](https://github.com/official-stockfish/Stockfish/wiki/UCI-&-Commands).)*
+* `DEFAULT_TIMEOUT` - default request timeout if not specified in the request. Integer milliseconds. Default is 2000.
 
-6. **Stop the Running Container:**
+* `MAX_TIMEOUT` - request execution time limit, which limits the timeout specified in the request. Integer milliseconds. Default is 30000.
 
-    ```
-    docker stop stockfish-demo-container
-    ```
+* `DEFAULT_DEPTH` - engine search depth if not specified in the request. Default is 1.
 
-7. **Remove the Built Image:**
+* `ENGINE_CMD` - engine launch command. Should not contain spaces within argument values, since the arguments will be separated directly by spaces without special command parsing. Default is `stockfish`.
 
-    ```
-    docker rmi stockfish-demo-image
-    ```
+## Request structure
+
+Request must be in json format
+
+**Required fields**:
+
+* `fen` - position on the board in Forsyth–Edwards Notation (FEN).
+
+**Optional fields**:
+
+* `depth` - engine search depth, positive integer. Default value is taken from environment variables.
+
+* `timeout` - request timeout, integer milliseconds. Default value is taken from environment variables.
+
+## Response structure
+
+If successful, the server will respond with http status 200 and json with `bestMove` field, which contains the best next move string like `e2e4` or `(none)` if there is none.
+
+In case of user data error, the status will be 400 and json with an error description.
+
+In case of server-side error, the status will be 500 and json with an error description.
