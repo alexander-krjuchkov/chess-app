@@ -74,7 +74,7 @@ You can choose one of the following options.
     1. **Run new container:**
 
         ```
-        docker run --rm -d -p 5000:5000 --name engine-container engine-image
+        docker run --rm -d --name engine-container engine-image
         ```
 
     2. **Install project dependencies:**
