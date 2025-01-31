@@ -13,7 +13,7 @@
 2. **(Optional) View the image size:**
 
     ```
-    docker inspect -f "{{ .Size }}" engine-image | numfmt --to=si
+    docker inspect -f "{{ .Size }}" engine-image | numfmt --to=iec-i
     ```
 
     *(See [this gist](https://gist.github.com/MichaelSimons/fb588539dcefd9b5fdf45ba04c302db6) for more details.)*
