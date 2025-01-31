@@ -159,6 +159,10 @@ app.post(
     },
 );
 
+app.get('/health', (_, res) => {
+    res.status(200).json({ status: 'healthy' });
+});
+
 /**
  * Error handler middleware.
  * see https://expressjs.com/en/guide/error-handling.html

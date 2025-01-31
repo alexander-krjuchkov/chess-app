@@ -7,7 +7,7 @@
 1. **Build the image:**
 
     ```
-    docker build --tag engine-image .
+    docker build --tag engine-image ./service
     ```
 
 2. **(Optional) View the image size:**
@@ -53,6 +53,14 @@ You can choose one of the following options.
         > quit
         ```
 
+    5. **Stop the running container:**
+
+        ❗ **_Don't forget to stop the container_**
+
+        ```
+        docker stop engine-container
+        ```
+
 * **Experience the http interface for getting the best move locally**
 
     1. **Run new container:**
@@ -69,15 +77,29 @@ You can choose one of the following options.
         curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
         ```
 
+    3. **Stop the running container:**
+
+        ❗ **_Don't forget to stop the container_**
+
+        ```
+        docker stop engine-container
+        ```
+
 * **Develop the HTTP interface locally**
 
-    1. **Run new container:**
+    1. **Change directory:**
+
+        ```
+        cd ./service
+        ```
+
+    2. **Run new container:**
 
         ```
         docker run --rm -d --name engine-container engine-image
         ```
 
-    2. **Install project dependencies:**
+    3. **Install service directory dependencies:**
 
         ```
         npm i
@@ -95,17 +117,57 @@ You can choose one of the following options.
         curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
         ```
 
-### Post-Interaction
+    5. **Stop the running container:**
 
-1. **Stop the running container:**
+        ❗ **_Don't forget to stop the container_**
 
-    ❗ **_Don't forget to stop the container_**
+        ```
+        docker stop engine-container
+        ```
+
+* **Run image integration tests**
 
     ```
-    docker stop engine-container
+    ./test.sh
     ```
 
-2. **Remove the built image:**
+* **Develop integration tests locally**
+
+    1. **Change directory:**
+
+        ```
+        cd ./tests
+        ```
+
+    2. **Install test directory dependencies:**
+
+        ```
+        npm i
+        ```
+
+    2. **Run new container:**
+
+        ```
+        docker run --rm -d -p 5000:5000 --name engine-container engine-image
+        ```
+
+    3. **Run tests**
+
+        ```
+        API_URL='http://localhost:5000/best-move' npm run test
+        ```
+
+    4. **Stop the running container:**
+
+        ❗ **_Don't forget to stop the container_**
+
+        ```
+        docker stop engine-container
+        ```
+
+### Post-interaction
+
+1. **Remove the built image:**
 
     ```
     docker rmi engine-image

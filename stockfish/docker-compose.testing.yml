@@ -1,0 +1,18 @@
+services:
+  engine:
+    build: ./service
+    environment:
+      - PORT=5000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  tester:
+    build: ./tests
+    environment:
+      - API_URL=http://engine:5000/best-move
+    depends_on:
+      engine:
+        condition: service_healthy
