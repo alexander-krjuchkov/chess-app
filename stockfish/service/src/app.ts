@@ -9,19 +9,26 @@ type EngineCommand = {
     args: string[];
 };
 
+class OperationTimeoutError extends Error {
+    constructor(message: string = 'Operation timed out') {
+        super(message);
+        this.name = 'OperationTimeoutError';
+    }
+}
+
 const port = process.env.PORT || 5000;
 const defaultTimeout = Number(process.env.DEFAULT_TIMEOUT) || 2000;
 const maxTimeout = Number(process.env.MAX_TIMEOUT) || 30000;
 const defaultDepth = Number(process.env.DEFAULT_DEPTH) || 1;
-const engineCommandString = process.env.ENGINE_CMD || 'stockfish';
+const engineCommandString = process.env.ENGINE_CMD || '["stockfish"]';
 
-const [engineExecutable, ...engineArgs] = engineCommandString.split(' ');
-if (!engineExecutable) {
-    throw new Error('engine command is not set');
+const parsedCommand = JSON.parse(engineCommandString);
+if (!Array.isArray(parsedCommand) || parsedCommand[0] === undefined) {
+    throw new Error('engine command array is not set or empty');
 }
 const engineCommand: EngineCommand = {
-    executable: engineExecutable,
-    args: engineArgs,
+    executable: parsedCommand[0],
+    args: parsedCommand.slice(1),
 };
 
 const app = express();
@@ -41,8 +48,6 @@ async function getBestMove(
 
     const engine = spawn(engineCommand.executable, engineCommand.args, {
         signal: aborter.signal,
-        timeout: timeoutMs,
-        killSignal: 'SIGKILL', // kill signal for spawn timeout
     });
 
     const reader = readline.createInterface({
@@ -102,6 +107,10 @@ async function getBestMove(
         ),
     );
 
+    const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new OperationTimeoutError()), timeoutMs),
+    );
+
     try {
         return await Promise.race([
             executeUciDialogue(),
@@ -110,6 +119,7 @@ async function getBestMove(
                 getRejectOnErrorPromise(emitter),
             ),
             rejectOnExitPromise,
+            timeoutPromise,
         ]);
     } catch (error) {
         aborter.abort(error);
@@ -174,6 +184,11 @@ app.use(
         res: Response,
         next: NextFunction /** 4th arg distinguishes error handler from other middleware. */,
     ) => {
+        if (err instanceof OperationTimeoutError) {
+            res.status(504).json({ error: err.message });
+            return;
+        }
+
         console.error(`[${new Date().toISOString()}] Error: ${err.message}`);
         res.status(500).json({ error: err.message });
     },

@@ -1,6 +1,7 @@
 services:
   engine:
     build: ./service
+    env_file: ./tests/config/.env.${SUITE}
     environment:
       - PORT=5000
     healthcheck:
@@ -11,6 +12,7 @@ services:
 
   tester:
     build: ./tests
+    command: -- integration.${SUITE}.test.js
     environment:
       - API_URL=http://engine:5000/best-move
     depends_on:

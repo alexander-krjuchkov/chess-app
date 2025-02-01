@@ -108,7 +108,8 @@ You can choose one of the following options.
     3. **Start http server:**
 
         ```
-        ENGINE_CMD='docker exec -i engine-container stockfish' npm run dev
+        ENGINE_CMD='["docker", "exec", "-i", "engine-container", "stockfish"]' \
+         npm run dev
         ```
 
     4. **Send request to the interface:**
@@ -133,37 +134,67 @@ You can choose one of the following options.
 
 * **Develop integration tests locally**
 
-    1. **Change directory:**
+    * **Setup**
 
-        ```
-        cd ./tests
-        ```
+        1. **Change directory:**
 
-    2. **Install test directory dependencies:**
+            ```
+            cd ./tests
+            ```
 
-        ```
-        npm i
-        ```
+        2. **Install test directory dependencies:**
 
-    2. **Run new container:**
+            ```
+            npm i
+            ```
 
-        ```
-        docker run --rm -d -p 5000:5000 --name engine-container engine-image
-        ```
+    * **Develop**
 
-    3. **Run tests**
+        * **Main suite**
 
-        ```
-        API_URL='http://localhost:5000/best-move' npm run test
-        ```
+            1. **Run new container:**
 
-    4. **Stop the running container:**
+                ```
+                docker run --rm -d -p 5000:5000 --name engine-container engine-image
+                ```
 
-        ❗ **_Don't forget to stop the container_**
+            2. **Run tests:**
 
-        ```
-        docker stop engine-container
-        ```
+                ```
+                API_URL='http://localhost:5000/best-move' \
+                 npm run test -- integration.main.test.js
+                ```
+
+            3. **Stop the running container:**
+
+                ❗ **_Don't forget to stop the container_**
+
+                ```
+                docker stop engine-container
+                ```
+
+        * **Timeout suite**
+
+            1. **Run new container:**
+
+                ```
+                docker run --rm -d -p 5000:5000 --env-file ./config/.env.timeout --name engine-container engine-image
+                ```
+
+            2. **Run tests:**
+
+                ```
+                API_URL='http://localhost:5000/best-move' \
+                 npm run test -- integration.timeout.test.js
+                ```
+
+            3. **Stop the running container:**
+
+                ❗ **_Don't forget to stop the container_**
+
+                ```
+                docker stop engine-container
+                ```
 
 ### Post-interaction
 
@@ -185,7 +216,7 @@ The following environment variables can be optionally set
 
 * `DEFAULT_DEPTH` - engine search depth if not specified in the request. Default is 1.
 
-* `ENGINE_CMD` - engine launch command. Should not contain spaces within argument values, since the arguments will be separated directly by spaces without special command parsing. Default is `stockfish`.
+* `ENGINE_CMD` - engine launch command. JSON with an array of strings, where the first element is the executable, the following elements are command arguments passed to the executable. Default is `["stockfish"]`.
 
 ## Request structure
 

@@ -7,4 +7,4 @@ RUN npm ci
 
 COPY . .
 
-CMD ["npm", "test"]
+ENTRYPOINT ["npm", "test"]
