@@ -22,179 +22,179 @@
 
 You can choose one of the following options.
 
-* **Explore the engine inside the running container**
+#### Explore the engine inside the running container
 
-    1. **Run new container:**
+1. **Run new container:**
 
-        ```
-        docker run --rm -d --name engine-container engine-image
-        ```
+    ```
+    docker run --rm -d --name engine-container engine-image
+    ```
 
-    2. **Enter stockfish interface:**
+2. **Enter stockfish interface:**
 
-        ```
-        docker exec -it engine-container stockfish
-        ```
+    ```
+    docker exec -it engine-container stockfish
+    ```
 
-    3. **Try these commands:**
+3. **Try these commands:**
 
-        ```
-        > uci
-        > isready
-        > position startpos
-        > go depth 1
-        ```
+    ```
+    > uci
+    > isready
+    > position startpos
+    > go depth 1
+    ```
 
-        For more information on commands, see the [Stockfish UCI & Commands wiki](https://github.com/official-stockfish/Stockfish/wiki/UCI-&-Commands)
+    For more information on commands, see the [Stockfish UCI & Commands wiki](https://github.com/official-stockfish/Stockfish/wiki/UCI-&-Commands)
 
-    4. **Exit stockfish interface:**
+4. **Exit stockfish interface:**
 
-        ```
-        > quit
-        ```
+    ```
+    > quit
+    ```
 
-    5. **Stop the running container:**
+5. **Stop the running container:**
 
-        ❗ **_Don't forget to stop the container_**
+    ❗ **_Don't forget to stop the container_**
 
-        ```
-        docker stop engine-container
-        ```
+    ```
+    docker stop engine-container
+    ```
 
-* **Experience the http interface for getting the best move locally**
+#### Experience the http interface for getting the best move locally
 
-    1. **Run new container:**
+1. **Run new container:**
 
-        ```
-        docker run --rm -d -p 5000:5000 --name engine-container engine-image
-        ```
+    ```
+    docker run --rm -d -p 5000:5000 --name engine-container engine-image
+    ```
 
-    2. **Send requests to the interface**
+2. **Send requests to the interface**
 
-        Request example:
+    Request example:
 
-        ```
-        curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
-        ```
+    ```
+    curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
+    ```
 
-    3. **Stop the running container:**
+3. **Stop the running container:**
 
-        ❗ **_Don't forget to stop the container_**
+    ❗ **_Don't forget to stop the container_**
 
-        ```
-        docker stop engine-container
-        ```
+    ```
+    docker stop engine-container
+    ```
 
-* **Develop the HTTP interface locally**
+#### Develop the HTTP interface locally
+
+1. **Change directory:**
+
+    ```
+    cd ./service
+    ```
+
+2. **Run new container:**
+
+    ```
+    docker run --rm -d --name engine-container engine-image
+    ```
+
+3. **Install service directory dependencies:**
+
+    ```
+    npm i
+    ```
+
+3. **Start http server:**
+
+    ```
+    ENGINE_CMD='["docker", "exec", "-i", "engine-container", "stockfish"]' \
+      npm run dev
+    ```
+
+4. **Send request to the interface:**
+
+    ```
+    curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
+    ```
+
+5. **Stop the running container:**
+
+    ❗ **_Don't forget to stop the container_**
+
+    ```
+    docker stop engine-container
+    ```
+
+#### Run image integration tests
+
+```
+./test.sh
+```
+
+#### Develop integration tests locally
+
+* **Setup**
 
     1. **Change directory:**
 
         ```
-        cd ./service
+        cd ./tests
         ```
 
-    2. **Run new container:**
-
-        ```
-        docker run --rm -d --name engine-container engine-image
-        ```
-
-    3. **Install service directory dependencies:**
+    2. **Install test directory dependencies:**
 
         ```
         npm i
         ```
 
-    3. **Start http server:**
+* **Develop**
 
-        ```
-        ENGINE_CMD='["docker", "exec", "-i", "engine-container", "stockfish"]' \
-         npm run dev
-        ```
+    * **Main suite**
 
-    4. **Send request to the interface:**
-
-        ```
-        curl -X POST http://localhost:5000/best-move -H "Content-Type: application/json" -d '{"fen": "rnbqkb1r/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"}'
-        ```
-
-    5. **Stop the running container:**
-
-        ❗ **_Don't forget to stop the container_**
-
-        ```
-        docker stop engine-container
-        ```
-
-* **Run image integration tests**
-
-    ```
-    ./test.sh
-    ```
-
-* **Develop integration tests locally**
-
-    * **Setup**
-
-        1. **Change directory:**
+        1. **Run new container:**
 
             ```
-            cd ./tests
+            docker run --rm -d -p 5000:5000 --name engine-container engine-image
             ```
 
-        2. **Install test directory dependencies:**
+        2. **Run tests:**
 
             ```
-            npm i
+            API_URL='http://localhost:5000/best-move' \
+              npm run test -- integration.main.test.js
             ```
 
-    * **Develop**
+        3. **Stop the running container:**
 
-        * **Main suite**
+            ❗ **_Don't forget to stop the container_**
 
-            1. **Run new container:**
+            ```
+            docker stop engine-container
+            ```
 
-                ```
-                docker run --rm -d -p 5000:5000 --name engine-container engine-image
-                ```
+    * **Timeout suite**
 
-            2. **Run tests:**
+        1. **Run new container:**
 
-                ```
-                API_URL='http://localhost:5000/best-move' \
-                 npm run test -- integration.main.test.js
-                ```
+            ```
+            docker run --rm -d -p 5000:5000 --env-file ./config/.env.timeout --name engine-container engine-image
+            ```
 
-            3. **Stop the running container:**
+        2. **Run tests:**
 
-                ❗ **_Don't forget to stop the container_**
+            ```
+            API_URL='http://localhost:5000/best-move' \
+              npm run test -- integration.timeout.test.js
+            ```
 
-                ```
-                docker stop engine-container
-                ```
+        3. **Stop the running container:**
 
-        * **Timeout suite**
+            ❗ **_Don't forget to stop the container_**
 
-            1. **Run new container:**
-
-                ```
-                docker run --rm -d -p 5000:5000 --env-file ./config/.env.timeout --name engine-container engine-image
-                ```
-
-            2. **Run tests:**
-
-                ```
-                API_URL='http://localhost:5000/best-move' \
-                 npm run test -- integration.timeout.test.js
-                ```
-
-            3. **Stop the running container:**
-
-                ❗ **_Don't forget to stop the container_**
-
-                ```
-                docker stop engine-container
-                ```
+            ```
+            docker stop engine-container
+            ```
 
 ### Post-interaction
 
