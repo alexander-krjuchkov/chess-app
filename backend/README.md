@@ -6,11 +6,23 @@ For more information about NestJS, please refer to the [NestJS Documentation](ht
 
 ## Project setup
 
-Install project dependencies:
+1. Run chess engine http interface locally
 
-```bash
-npm i
-```
+    See [engine service README.md](../stockfish/README.md) to get it ready and running.
+
+2. Install backend dependencies:
+
+    ```bash
+    npm i
+    ```
+
+## Environment variables
+
+The following environment variables can be optionally set
+
+* `PORT` - backend port. Default is 3000.
+
+* `BEST_MOVE_URL` - URL of the best chess move calculation endpoint of the engine's HTTP interface. Default is `http://localhost:5000/best-move`.
 
 ## Development
 

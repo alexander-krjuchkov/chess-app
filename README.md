@@ -26,7 +26,9 @@ In this project, GitHub deployment workflows use a container registry as an inte
 
 - **CONTAINER_REGISTRY_USERNAME**: Your username for the container registry.
 
-- **BACKEND_IMAGE**: The application builds and uses multiple images. This variable is for the latest backend image. For example, `yourusername/chess-app:backend-latest`.
+- **ENGINE_IMAGE**: The application builds and uses multiple images. This variable is for the latest engine image. For example, `yourusername/chess-app:engine-latest`.
+
+- **BACKEND_IMAGE**: This variable is for the latest backend image. For example, `yourusername/chess-app:backend-latest`.
 
 - **FRONTEND_IMAGE**: This variable is for the latest frontend image. For example, `yourusername/chess-app:frontend-latest`.
 

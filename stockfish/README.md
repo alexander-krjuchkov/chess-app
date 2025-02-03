@@ -22,6 +22,26 @@
 
 You can choose one of the following options.
 
+#### Run for local development of other services
+
+1. **Run new container:**
+
+    ```
+    docker run --rm -d -p 5000:5000 --name engine-container engine-image
+    ```
+
+2. **Develop other services**
+
+    Develop other services using this one
+
+3. **Stop the running container:**
+
+    ❗ **_Don't forget to stop the container_**
+
+    ```
+    docker stop engine-container
+    ```
+
 #### Explore the engine inside the running container
 
 1. **Run new container:**

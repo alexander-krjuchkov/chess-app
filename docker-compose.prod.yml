@@ -1,4 +1,11 @@
 services:
+  engine:
+    build: ./stockfish/service
+    image: ${CONTAINER_REGISTRY_HOST:?error}/${ENGINE_IMAGE:?error}
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+
   backend:
     build:
       context: ./backend
@@ -7,6 +14,7 @@ services:
     restart: unless-stopped
     environment:
       PORT: 8000
+      BEST_MOVE_URL: http://engine:5000/best-move
     volumes:
       - ./data/source:/app/data/source
       - ./data/config:/app/data/config
