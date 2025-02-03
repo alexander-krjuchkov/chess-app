@@ -14,6 +14,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4.2.2
 
+    - name: Execute engine integration tests
+      working-directory: ./stockfish
+      run: ./test.sh
+
     - name: Set up Node.js ${{ env.node_version }}
       uses: actions/setup-node@v4.1.0
       with:
@@ -23,11 +27,11 @@ jobs:
       working-directory: ./backend
       run: npm i
 
-    - name: Execute unit tests
+    - name: Execute backend unit tests
       working-directory: ./backend
       run: npm run test
 
-    - name: Execute end-to-end tests
+    - name: Execute backend end-to-end tests
       working-directory: ./backend
       run: npm run test:e2e
 
@@ -42,6 +46,7 @@ jobs:
       run: |
         touch .env
         echo "CONTAINER_REGISTRY_HOST=${{ vars.CONTAINER_REGISTRY_HOST }}" >> .env
+        echo "ENGINE_IMAGE=${{ vars.ENGINE_IMAGE }}" >> .env
         echo "BACKEND_IMAGE=${{ vars.BACKEND_IMAGE }}" >> .env
         echo "FRONTEND_IMAGE=${{ vars.FRONTEND_IMAGE }}" >> .env
         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
@@ -84,6 +89,7 @@ jobs:
       run: |
         touch .env
         echo "CONTAINER_REGISTRY_HOST=${{ vars.CONTAINER_REGISTRY_HOST }}" >> .env
+        echo "ENGINE_IMAGE=${{ vars.ENGINE_IMAGE }}" >> .env
         echo "BACKEND_IMAGE=${{ vars.BACKEND_IMAGE }}" >> .env
         echo "FRONTEND_IMAGE=${{ vars.FRONTEND_IMAGE }}" >> .env
         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env

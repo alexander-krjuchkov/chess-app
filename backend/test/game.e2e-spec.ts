@@ -3,6 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { GameModule } from '../src/game.module';
 import { isValidNextMove } from './utils';
+import { EngineApiInterface } from '../src/engine-api.interface';
+import { MockEngineApiService } from '../src/engine-api.service.mock';
 
 describe('GameController (e2e)', () => {
     let app: INestApplication;
@@ -10,7 +12,10 @@ describe('GameController (e2e)', () => {
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
             imports: [GameModule],
-        }).compile();
+        })
+            .overrideProvider(EngineApiInterface)
+            .useClass(MockEngineApiService)
+            .compile();
 
         app = moduleFixture.createNestApplication();
         app.setGlobalPrefix('api');

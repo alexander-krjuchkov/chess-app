@@ -1,0 +1,25 @@
+{
+  "name": "stockfish-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx src/app.ts",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Alexander Kryuchkov <alexander.v.kryuchkov@yandex.ru>",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.0",
+    "chess.js": "^1.0.0",
+    "express": "^5.0.1",
+    "p-event": "^6.0.1"
+  }
+}

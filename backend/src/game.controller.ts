@@ -4,9 +4,11 @@ import {
     Controller,
     HttpCode,
     Post,
+    ServiceUnavailableException,
 } from '@nestjs/common';
 import { GameService } from './game.service';
 import { InvalidMoveError } from './invalid-move.error';
+import { EngineApiError } from './engine-api.errors';
 
 @Controller('game')
 export class GameController {
@@ -14,16 +16,19 @@ export class GameController {
 
     @Post('move')
     @HttpCode(200)
-    handleMove(@Body() body: { moves: string[] }) {
+    async handleMove(@Body() body: { moves: string[] }) {
         // TODO: validate request
 
         try {
             return {
-                nextMove: this.gameService.getNextMove(body.moves),
+                nextMove: await this.gameService.getNextMove(body.moves),
             };
         } catch (e) {
             if (e instanceof InvalidMoveError) {
                 throw new BadRequestException('Invalid move sequence');
+            }
+            if (e instanceof EngineApiError) {
+                throw new ServiceUnavailableException('Engine is unavailable');
             }
             throw e;
         }
