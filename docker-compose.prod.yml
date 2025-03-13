@@ -15,9 +15,6 @@ services:
     environment:
       PORT: 8000
       BEST_MOVE_URL: http://engine:5000/best-move
-    volumes:
-      - ./data/source:/app/data/source
-      - ./data/config:/app/data/config
 
   frontend:
     build:
