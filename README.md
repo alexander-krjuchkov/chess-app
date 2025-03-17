@@ -4,17 +4,13 @@ This is a web application that allows users to play chess against a computer.
 
 ## Getting started
 
-To deploy the project to production, fork the repository, set up repository variables and secrets as described in the [GitHub actions](#github-actions) section, and run the [main workflow](.github/workflows/main.yml).
+## Production
 
-For development purposes, clone the repository locally and follow the setup instructions in the [backend/README.md](backend/README.md) and [frontend/README.md](frontend/README.md) files.
-
-## GitHub actions
-
-The project uses GitHub Actions to automate testing and deployment. For this purpose, repository variables and secrets have been added to the repository settings.
+To deploy to production, fork the repository, set up repository variables and secrets, and run the [main workflow](.github/workflows/main.yml).
 
 ### Repository variables
 
-**All of the described repository variables are required for production build and deploy.**
+**All of the described repository variables are required.**
 
 The following repository variables have been configured:
 
@@ -34,7 +30,7 @@ In this project, GitHub deployment workflows use a container registry as an inte
 
 ### Repository secrets
 
-**All of the described repository secrets are required for production build and deploy.**
+**All of the described repository secrets are required.**
 
 The following secrets have been added to the repository:
 
@@ -51,6 +47,28 @@ SSH connection parameters to the server where the application will be deployed:
 - **SSH_PUBLIC_KEY**: The public key for SSH access.
 
 The SSH_PRIVATE_KEY and SSH_PUBLIC_KEY form a key pair that provides access to the server where the application will be deployed. For security reasons, this key pair should be created specifically for deployment purposes and should not be used for any other activities.
+
+## Development
+
+To get started, first clone the repository locally.
+
+Second, set up your development environment. You can do this in two ways.
+
+### Option 1: All-in-one dev script
+
+For Linux with Docker installed, you can use the development script to launch all services in development mode with a single command:
+
+```sh
+./run-dev.sh
+```
+
+### Option 2: Running services individually
+
+Requires Node.js installed.
+
+For detailed setup and development instructions, follow service-specific guides:
+- [Backend instructions](backend/README.md)
+- [Frontend instructions](frontend/README.md)
 
 ## License
 
