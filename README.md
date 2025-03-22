@@ -70,6 +70,13 @@ For detailed setup and development instructions, follow service-specific guides:
 - [Backend instructions](backend/README.md)
 - [Frontend instructions](frontend/README.md)
 
+## Roadmap
+
+- [ ] Add authentication.
+- [ ] Implement saving of user games.
+- [ ] Design user interface.
+- [ ] Add localization.
+
 ## License
 
 This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
