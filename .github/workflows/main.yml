@@ -50,6 +50,12 @@ jobs:
         echo "BACKEND_IMAGE=${{ vars.BACKEND_IMAGE }}" >> .env
         echo "FRONTEND_IMAGE=${{ vars.FRONTEND_IMAGE }}" >> .env
         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
+        echo "AUTH_CLIENT_ID=${{ vars.AUTH_CLIENT_ID }}" >> .env
+        echo "AUTH_CLIENT_URL_ORIGIN=${{ vars.AUTH_CLIENT_URL_ORIGIN }}" >> .env
+        echo "AUTH_CLIENT_REDIRECT_PATH=${{ vars.AUTH_CLIENT_REDIRECT_PATH }}" >> .env
+        echo "AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH=${{ vars.AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH }}" >> .env
+        echo "AUTH_PROVIDER_ROOT_URL=${{ vars.AUTH_PROVIDER_ROOT_URL }}" >> .env
+        echo "AUTH_PROVIDER_JWKS_URI=${{ vars.AUTH_PROVIDER_JWKS_URI }}" >> .env
 
     - name: Build docker images
       run: |
@@ -93,6 +99,12 @@ jobs:
         echo "BACKEND_IMAGE=${{ vars.BACKEND_IMAGE }}" >> .env
         echo "FRONTEND_IMAGE=${{ vars.FRONTEND_IMAGE }}" >> .env
         echo "DOMAIN=${{ vars.DOMAIN }}" >> .env
+        echo "AUTH_CLIENT_ID=${{ vars.AUTH_CLIENT_ID }}" >> .env
+        echo "AUTH_CLIENT_URL_ORIGIN=${{ vars.AUTH_CLIENT_URL_ORIGIN }}" >> .env
+        echo "AUTH_CLIENT_REDIRECT_PATH=${{ vars.AUTH_CLIENT_REDIRECT_PATH }}" >> .env
+        echo "AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH=${{ vars.AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH }}" >> .env
+        echo "AUTH_PROVIDER_ROOT_URL=${{ vars.AUTH_PROVIDER_ROOT_URL }}" >> .env
+        echo "AUTH_PROVIDER_JWKS_URI=${{ vars.AUTH_PROVIDER_JWKS_URI }}" >> .env
 
     - name: Copy .env and docker-compose.prod.yml to remote server
       run: |

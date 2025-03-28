@@ -5,15 +5,18 @@ import {
     HttpCode,
     Post,
     ServiceUnavailableException,
+    UseGuards,
 } from '@nestjs/common';
 import { GameService } from './game.service';
 import { InvalidMoveError } from './invalid-move.error';
 import { EngineApiError } from './engine-api.errors';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('game')
 export class GameController {
     constructor(private gameService: GameService) {}
 
+    @UseGuards(AuthGuard())
     @Post('move')
     @HttpCode(200)
     async handleMove(@Body() body: { moves: string[] }) {

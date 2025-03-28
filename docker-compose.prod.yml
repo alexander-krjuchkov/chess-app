@@ -15,11 +15,20 @@ services:
     environment:
       PORT: 8000
       BEST_MOVE_URL: http://engine:5000/best-move
+      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:?error}
+      AUTH_PROVIDER_ROOT_URL: ${AUTH_PROVIDER_ROOT_URL:?error}
+      AUTH_PROVIDER_JWKS_URI: ${AUTH_PROVIDER_JWKS_URI:?error}
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+      args:
+        AUTH_PROVIDER_ROOT_URL: ${AUTH_PROVIDER_ROOT_URL:?error}
+        AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:?error}
+        AUTH_CLIENT_URL_ORIGIN: ${AUTH_CLIENT_URL_ORIGIN:?error}
+        AUTH_CLIENT_REDIRECT_PATH: ${AUTH_CLIENT_REDIRECT_PATH:?error}
+        AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH: ${AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH:?error}
     image: ${CONTAINER_REGISTRY_HOST:?error}/${FRONTEND_IMAGE:?error}
     restart: unless-stopped
     ports:
