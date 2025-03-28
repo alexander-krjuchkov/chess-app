@@ -7,7 +7,7 @@ const login = () => {
 
 const LoginButton = () => (
     <button type='button' onClick={login}>
-        Войти
+        Sign in
     </button>
 );
 
@@ -17,7 +17,7 @@ const logout = () => {
 
 const LogoutButton = () => (
     <button type='button' onClick={logout}>
-        Выйти
+        Sign out
     </button>
 );
 
