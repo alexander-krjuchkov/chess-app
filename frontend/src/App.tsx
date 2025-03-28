@@ -1,12 +1,15 @@
 import { GameProvider } from './GameProvider';
-import { Board } from './Board';
-import { StatusBar } from './StatusBar';
+import { AccountPanel } from './AccountPanel';
+import { AuthProvider } from './AuthProvider';
+import { Game } from './Game';
 
 export function App() {
     return (
-        <GameProvider>
-            <StatusBar />
-            <Board />
-        </GameProvider>
+        <AuthProvider>
+            <GameProvider>
+                <AccountPanel />
+                <Game />
+            </GameProvider>
+        </AuthProvider>
     );
 }

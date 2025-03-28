@@ -6,7 +6,7 @@ This is a web application that allows users to play chess against a computer.
 
 ## Production
 
-To deploy to production, fork the repository, set up repository variables and secrets, and run the [main workflow](.github/workflows/main.yml).
+To deploy to production, fork the repository, [set up the auth provider](keycloak/production-setup.md), set up repository variables and secrets, and run the [main workflow](.github/workflows/main.yml).
 
 ### Repository variables
 
@@ -14,7 +14,7 @@ To deploy to production, fork the repository, set up repository variables and se
 
 The following repository variables have been configured:
 
-- **DOMAIN**: The domain where the application will be hosted. This will be used in the Caddy configuration.
+- **DOMAIN**: The domain where the application will be hosted. This will be used in the Caddy configuration. For example, `chess-app.example.com`.
 
 In this project, GitHub deployment workflows use a container registry as an intermediate storage for built images.
 
@@ -27,6 +27,20 @@ In this project, GitHub deployment workflows use a container registry as an inte
 - **BACKEND_IMAGE**: This variable is for the latest backend image. For example, `yourusername/chess-app:backend-latest`.
 
 - **FRONTEND_IMAGE**: This variable is for the latest frontend image. For example, `yourusername/chess-app:frontend-latest`.
+
+This project also relies on an authorization provider, which requires specifying both its configuration and that of its client (the current application).
+
+- **AUTH_CLIENT_ID**: The client ID for this application. For example, `chess-app`.
+
+- **AUTH_CLIENT_URL_ORIGIN**: The URL origin of this client. For example, `https://chess-app.example.com`.
+
+- **AUTH_CLIENT_REDIRECT_PATH**: The redirect path after authentication. For example, `/auth-callback`. Used to obtain a `redirect_uri` by concatenating `AUTH_CLIENT_URL_ORIGIN` with it, and also as a URL path when processing a redirect callback.
+
+- **AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH**: The redirect path after logout. For example, `/`. Used to obtain the `post_logout_redirect_uri` by concatenating `AUTH_CLIENT_URL_ORIGIN` with it.
+
+- **AUTH_PROVIDER_ROOT_URL**: The root URL of the authorization provider. For example, `https://auth.example.com/realms/my-realm`.
+
+- **AUTH_PROVIDER_JWKS_URI**: The URI for the JSON Web Key Set of the authorization provider. For example, `https://auth.example.com/realms/my-realm/protocol/openid-connect/certs`.
 
 ### Repository secrets
 
@@ -61,6 +75,8 @@ For Linux with Docker installed, you can use the development script to launch al
 ```sh
 ./run-dev.sh
 ```
+
+After that, for the first time, you need to perform a [brief initial setup of Keycloak](./keycloak/dev-admin-setup.md).
 
 ### Option 2: Running services individually
 

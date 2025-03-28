@@ -15,6 +15,9 @@ services:
     environment:
       PORT: 8000
       BEST_MOVE_URL: http://engine:5000/best-move
+      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:?error}
+      AUTH_PROVIDER_ROOT_URL: ${AUTH_PROVIDER_ROOT_URL:?error}
+      AUTH_PROVIDER_JWKS_URI: ${AUTH_PROVIDER_JWKS_URI:?error}
 
   frontend:
     build:
@@ -27,6 +30,11 @@ services:
       - '443:443'
     environment:
       DOMAIN: ${DOMAIN:?error}
+      AUTH_PROVIDER_ROOT_URL: ${AUTH_PROVIDER_ROOT_URL:?error}
+      AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:?error}
+      AUTH_CLIENT_URL_ORIGIN: ${AUTH_CLIENT_URL_ORIGIN:?error}
+      AUTH_CLIENT_REDIRECT_PATH: ${AUTH_CLIENT_REDIRECT_PATH:?error}
+      AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH: ${AUTH_CLIENT_POST_LOGOUT_REDIRECT_PATH:?error}
     volumes:
       - caddy_data:/data
       - caddy_config:/config

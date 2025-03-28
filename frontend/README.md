@@ -32,7 +32,7 @@ npm i
 
 To get started, you need to start dependent services.
 
-Start the backend as described in [../backend/README.md](../backend/README.md#development-environment-setup).
+Start the backend with other dependent services as described in [../backend/README.md](../backend/README.md#option-2-running-services-individually).
 
 Don't forget to shut down dependent services after finishing your work.
 

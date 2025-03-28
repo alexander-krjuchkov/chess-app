@@ -47,8 +47,10 @@ cd ..
 
 Run
 ```sh
-HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose -f docker-compose.dev.yml up -d engine
+HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose -f docker-compose.dev.yml up -d engine keycloak
 ```
+
+**Important**: To use Keycloak for the first time, you need to initially configure its admin panel, see [../keycloak/dev-admin-setup.md](../keycloak/dev-admin-setup.md) for details.
 
 Don't forget to shut them down after finishing your work:
 ```sh
