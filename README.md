@@ -88,7 +88,7 @@ For detailed setup and development instructions, follow service-specific guides:
 
 ## Roadmap
 
-- [ ] Add authentication.
+- [x] Add auth.
 - [ ] Implement saving of user games.
 - [ ] Design user interface.
 - [ ] Add localization.
