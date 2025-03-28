@@ -14,8 +14,8 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4.2.2
 
-    - name: Execute engine integration tests
-      working-directory: ./stockfish
+    - name: Execute chess engine integration tests
+      working-directory: ./chess-engine
       run: ./test.sh
 
     - name: Set up Node.js ${{ env.node_version }}
