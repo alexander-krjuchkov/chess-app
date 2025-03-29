@@ -1,5 +1,5 @@
-import { userManager } from './user-manager';
-import { useAuth } from './AuthContext';
+import { userManager } from '../user-manager';
+import { useAuth } from '../auth-provider';
 
 const login = () => {
     void userManager.signinRedirect();

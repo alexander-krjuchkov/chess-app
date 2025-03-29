@@ -1,9 +1,11 @@
 import { userManager } from './user-manager';
 
-async function fetchWithAuth<R = unknown>(
-    url: RequestInfo | URL,
+// TODO: improve error handling
+
+async function fetchWithAuth<Result = unknown>(
+    url: string,
     options?: RequestInit,
-): Promise<R> {
+): Promise<Result> {
     const user = await userManager.getUser();
     const headers = new Headers(options?.headers);
 
@@ -17,7 +19,7 @@ async function fetchWithAuth<R = unknown>(
         throw new Error(response.statusText);
     }
 
-    return (await response.json()) as R;
+    return (await response.json()) as Result;
 }
 
 type NextMoveResponse = { nextMove: string };
@@ -32,7 +34,6 @@ type NextMoveResponse = { nextMove: string };
 export async function getComputerMove(
     moves: string[],
 ): Promise<string | undefined> {
-    // TODO: handle errors
     const { nextMove } = await fetchWithAuth<NextMoveResponse>(
         '/api/game/move',
         {

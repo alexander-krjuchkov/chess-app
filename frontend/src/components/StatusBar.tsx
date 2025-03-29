@@ -1,5 +1,5 @@
-import { useGameContext } from './GameContext';
-import { GameStatus } from './types';
+import { useGameContext } from '../game-provider';
+import { GameStatus } from '../types';
 
 function StatusInfo({ status }: { status: GameStatus }) {
     if (!status.isGameOver) {

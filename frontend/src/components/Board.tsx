@@ -1,5 +1,5 @@
 import { Chessboard } from 'react-chessboard';
-import { useGameContext } from './GameContext';
+import { useGameContext } from '../game-provider';
 
 export function Board() {
     const { fenPosition, handlePieceDrop } = useGameContext();

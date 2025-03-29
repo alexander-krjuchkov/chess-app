@@ -1,4 +1,4 @@
-import { useAuth } from './AuthContext';
+import { useAuth } from '../auth-provider';
 import { Board } from './Board';
 import { StatusBar } from './StatusBar';
 

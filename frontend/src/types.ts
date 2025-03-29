@@ -1,12 +1,8 @@
-export type GameStatus = PlayingGameStatus | FinishedGameStatus;
-
 type PlayingGameStatus = {
     isGameOver: false;
     isCheck: boolean;
     turn: 'white' | 'black';
 };
-
-type FinishedGameStatus = CheckmateGameStatus | DrawGameStatus;
 
 type CheckmateGameStatus = {
     isGameOver: true;
@@ -23,3 +19,7 @@ type DrawGameStatus = {
         | 'threefold-repetition'
         | 'insufficient-material';
 };
+
+type FinishedGameStatus = CheckmateGameStatus | DrawGameStatus;
+
+export type GameStatus = PlayingGameStatus | FinishedGameStatus;

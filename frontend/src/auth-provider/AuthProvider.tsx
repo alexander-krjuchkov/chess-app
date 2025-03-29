@@ -1,37 +1,8 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { User } from 'oidc-client-ts';
-import { userManager } from './user-manager';
+import { userManager } from '../user-manager';
 import { AuthContext } from './AuthContext';
-import { config } from './config';
-
-/**
- * Handles sign-in redirect callback from authorization server.
- * Should be used once at the top level of the app component structure.
- */
-function useSignInRedirectCallback() {
-    const processStarted = useRef(false);
-
-    useEffect(() => {
-        if (processStarted.current) {
-            // block double running in react StrictMode
-            return;
-        }
-        processStarted.current = true;
-
-        const handleAuthCallback = async () => {
-            if (window.location.pathname !== config.AUTH_CLIENT_REDIRECT_PATH) {
-                return;
-            }
-            try {
-                await userManager.signinRedirectCallback();
-            } finally {
-                window.history.replaceState(null, '', '/');
-            }
-        };
-
-        void handleAuthCallback();
-    }, []);
-}
+import { useSignInRedirectCallback } from './useSignInRedirectCallback';
 
 /**
  * Should be used once at the top level of the app component structure
