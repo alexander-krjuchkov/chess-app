@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Chess } from 'chess.js';
 import { InvalidMoveError } from './invalid-move.error';
-import { EngineApiInterface } from './engine-api.interface';
+import { EngineApiInterface } from '../engine-api/engine-api.interface';
 
 @Injectable()
 export class GameService {

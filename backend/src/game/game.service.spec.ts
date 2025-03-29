@@ -1,7 +1,7 @@
-import { isValidNextMove } from '../test/utils';
+import { isValidNextMove } from '../../test/utils';
 import { GameService } from './game.service';
 import { InvalidMoveError } from './invalid-move.error';
-import { MockEngineApiService } from './engine-api.service.mock';
+import { MockEngineApiService } from '../engine-api/engine-api.service.mock';
 
 describe('GameService', () => {
     let service: GameService;

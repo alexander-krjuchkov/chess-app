@@ -1,10 +1,10 @@
 import { Test } from '@nestjs/testing';
 import { CanActivate, INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { GameModule } from '../src/game.module';
+import { AppModule } from '../src/app.module';
 import { isValidNextMove } from './utils';
-import { EngineApiInterface } from '../src/engine-api.interface';
-import { MockEngineApiService } from '../src/engine-api.service.mock';
+import { EngineApiInterface } from '../src/engine-api/engine-api.interface';
+import { MockEngineApiService } from '../src/engine-api/engine-api.service.mock';
 import { AuthGuard } from '@nestjs/passport';
 
 describe('GameController (e2e)', () => {
@@ -14,7 +14,7 @@ describe('GameController (e2e)', () => {
         mockAuthorized: boolean;
     }): Promise<INestApplication> {
         const moduleFixtureBuilder = Test.createTestingModule({
-            imports: [GameModule],
+            imports: [AppModule],
         })
             .overrideProvider(EngineApiInterface)
             .useClass(MockEngineApiService);

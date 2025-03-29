@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { GameService } from './game.service';
 import { InvalidMoveError } from './invalid-move.error';
-import { EngineApiError } from './engine-api.errors';
+import { EngineApiError } from '../engine-api/engine-api.errors';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('game')
