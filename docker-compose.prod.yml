@@ -1,6 +1,6 @@
 services:
   engine:
-    build: ./stockfish/service
+    build: ./chess-engine/service
     image: ${CONTAINER_REGISTRY_HOST:?error}/${ENGINE_IMAGE:?error}
     restart: unless-stopped
     environment:

@@ -1,6 +1,6 @@
-import { GameProvider } from './GameProvider';
+import { GameProvider } from '../game-provider';
 import { AccountPanel } from './AccountPanel';
-import { AuthProvider } from './AuthProvider';
+import { AuthProvider } from '../auth-provider';
 import { Game } from './Game';
 
 export function App() {

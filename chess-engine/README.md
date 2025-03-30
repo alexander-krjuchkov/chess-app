@@ -1,4 +1,6 @@
-# Docker image for stockfish
+# Docker image for chess engine
+
+This project uses Stockfish as a chess engine. In this project, it is containerized and tested with an HTTP interface developed for the project.
 
 ## Getting started
 
