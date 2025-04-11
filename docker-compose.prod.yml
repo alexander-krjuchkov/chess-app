@@ -6,6 +6,21 @@ services:
     environment:
       PORT: 5000
 
+  database:
+    image: postgres:17.4-alpine3.21
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE:?error}
+      POSTGRES_USER: ${POSTGRES_USER:?error}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?error}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   backend:
     build:
       context: ./backend
@@ -18,6 +33,14 @@ services:
       AUTH_CLIENT_ID: ${AUTH_CLIENT_ID:?error}
       AUTH_PROVIDER_ROOT_URL: ${AUTH_PROVIDER_ROOT_URL:?error}
       AUTH_PROVIDER_JWKS_URI: ${AUTH_PROVIDER_JWKS_URI:?error}
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE:?error}
+      POSTGRES_USER: ${POSTGRES_USER:?error}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?error}
+    depends_on:
+      database:
+        condition: service_healthy
 
   frontend:
     build:
@@ -41,5 +64,6 @@ services:
       - caddy_config:/config
 
 volumes:
+  pg_data:
   caddy_data:
   caddy_config:

@@ -1,16 +1,16 @@
-type PlayingGameStatus = {
+type PlayingExtendedGameStatus = {
     isGameOver: false;
     isCheck: boolean;
     turn: 'white' | 'black';
 };
 
-type CheckmateGameStatus = {
+type CheckmateExtendedGameStatus = {
     isGameOver: true;
     gameOverReason: 'checkmate';
     winner: 'white' | 'black';
 };
 
-type DrawGameStatus = {
+type DrawExtendedGameStatus = {
     isGameOver: true;
     gameOverReason: 'draw';
     drawReason:
@@ -20,6 +20,25 @@ type DrawGameStatus = {
         | 'insufficient-material';
 };
 
-type FinishedGameStatus = CheckmateGameStatus | DrawGameStatus;
+type FinishedExtendedGameStatus =
+    | CheckmateExtendedGameStatus
+    | DrawExtendedGameStatus;
 
-export type GameStatus = PlayingGameStatus | FinishedGameStatus;
+export type ExtendedGameStatus =
+    | PlayingExtendedGameStatus
+    | FinishedExtendedGameStatus;
+
+export type ShortGameStatus =
+    | 'in_progress'
+    | 'white_wins'
+    | 'black_wins'
+    | 'draw';
+
+export type Game = {
+    id: string;
+    userId: string;
+    moves: string[];
+    status: ShortGameStatus;
+    createdAt: string;
+    updatedAt: string;
+};

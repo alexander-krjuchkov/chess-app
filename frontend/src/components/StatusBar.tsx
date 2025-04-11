@@ -1,7 +1,7 @@
 import { useGameContext } from '../game-provider';
-import { GameStatus } from '../types';
+import { ExtendedGameStatus } from '../types';
 
-function StatusInfo({ status }: { status: GameStatus }) {
+function StatusInfo({ status }: { status: ExtendedGameStatus }) {
     if (!status.isGameOver) {
         return `Turn: ${status.turn} ${status.turn === 'white' ? '⬜' : '⬛'}${status.isCheck ? ' (Check 🚨)' : ''}`;
     }
@@ -28,11 +28,15 @@ function StatusInfo({ status }: { status: GameStatus }) {
 }
 
 export function StatusBar() {
-    const { gameStatus } = useGameContext();
+    const { extendedGameStatus } = useGameContext();
+
+    if (!extendedGameStatus) {
+        return <></>;
+    }
 
     return (
         <div>
-            <StatusInfo status={gameStatus} />
+            <StatusInfo status={extendedGameStatus} />
         </div>
     );
 }

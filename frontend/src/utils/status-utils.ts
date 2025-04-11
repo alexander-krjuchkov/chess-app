@@ -1,36 +1,34 @@
 import { Chess } from 'chess.js';
-import { GameStatus } from '../types';
+import { ExtendedGameStatus } from '../types';
 
-export const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
-
-export function getGameStatus(game: Chess): GameStatus {
-    if (!game.isGameOver()) {
+export function getGameStatus(chess: Chess): ExtendedGameStatus {
+    if (!chess.isGameOver()) {
         return {
             isGameOver: false,
-            isCheck: game.isCheck(),
-            turn: game.turn() === 'w' ? 'white' : 'black',
+            isCheck: chess.isCheck(),
+            turn: chess.turn() === 'w' ? 'white' : 'black',
         };
     }
 
-    if (game.isCheckmate()) {
+    if (chess.isCheckmate()) {
         return {
             isGameOver: true,
             gameOverReason: 'checkmate',
-            winner: game.turn() === 'w' ? 'black' : 'white',
+            winner: chess.turn() === 'w' ? 'black' : 'white',
         };
     }
 
-    if (game.isDraw()) {
+    if (chess.isDraw()) {
         return {
             isGameOver: true,
             gameOverReason: 'draw',
             drawReason: (() => {
                 switch (true) {
-                    case game.isStalemate():
+                    case chess.isStalemate():
                         return 'stalemate';
-                    case game.isThreefoldRepetition():
+                    case chess.isThreefoldRepetition():
                         return 'threefold-repetition';
-                    case game.isInsufficientMaterial():
+                    case chess.isInsufficientMaterial():
                         return 'insufficient-material';
                     default:
                         return '50-move-rule';

@@ -17,6 +17,30 @@ services:
       - keycloak_data:/opt/keycloak/data
     command: start-dev
 
+  database:
+    image: postgres:17.4-alpine3.21
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer:4.17.1
+    environment:
+      ADMINER_DEFAULT_DRIVER: pgsql
+      ADMINER_DEFAULT_SERVER: database
+      ADMINER_DEFAULT_USERNAME: postgres
+      ADMINER_DEFAULT_PASSWORD: example
+      ADMINER_DEFAULT_DB: postgres
+    ports:
+      - "9000:8080"
+    volumes:
+      - ./adminer/index.dev.php:/var/www/html/index.php:ro
+
   backend:
     image: node:23.5.0-alpine3.20
     user: "${HOST_UID}:${HOST_GID}"
@@ -29,6 +53,11 @@ services:
       PORT: 3000
       BEST_MOVE_URL: http://engine:5000/best-move
       AUTH_PROVIDER_JWKS_URI: http://keycloak:8080/realms/my-realm/protocol/openid-connect/certs
+      POSTGRES_HOST: database
+      POSTGRES_PORT: 5432
+      POSTGRES_DATABASE: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
     command: |
       sh -c "if [ ! -d node_modules ]; then
         npm install;
@@ -54,3 +83,4 @@ services:
 
 volumes:
   keycloak_data:
+  pg_data:

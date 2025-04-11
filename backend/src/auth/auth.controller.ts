@@ -1,5 +1,7 @@
-import { Controller, Get, Req, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { RequestUser } from './auth.types';
+import { User } from './user.decorator';
 
 /**
  * @todo Remove this controller in the next steps of development, as it is not really needed.
@@ -8,9 +10,9 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
     @UseGuards(AuthGuard())
     @Get('profile')
-    getProfile(@Req() req: Request & { user: any }) {
+    getProfile(@User() user: RequestUser) {
         return {
-            user: req.user,
+            user,
         };
     }
 }

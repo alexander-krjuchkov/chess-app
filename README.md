@@ -62,6 +62,14 @@ SSH connection parameters to the server where the application will be deployed:
 
 The SSH_PRIVATE_KEY and SSH_PUBLIC_KEY form a key pair that provides access to the server where the application will be deployed. For security reasons, this key pair should be created specifically for deployment purposes and should not be used for any other activities.
 
+Connection parameters for PostgreSQL database:
+
+- **POSTGRES_DATABASE**: The name of the PostgreSQL database.
+
+- **POSTGRES_USER**: The username for accessing the PostgreSQL database.
+
+- **POSTGRES_PASSWORD**: The password for the PostgreSQL user.
+
 ## Development
 
 To get started, first clone the repository locally.
@@ -89,7 +97,7 @@ For detailed setup and development instructions, follow service-specific guides:
 ## Roadmap
 
 - [x] Add auth.
-- [ ] Implement saving of user games.
+- [x] Implement saving of user games.
 - [ ] Design user interface.
 - [ ] Add localization.
 
