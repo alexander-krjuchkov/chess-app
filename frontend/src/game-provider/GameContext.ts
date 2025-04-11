@@ -1,10 +1,10 @@
 import { createContext } from 'react';
-import { GameStatus } from '../types';
+import { ExtendedGameStatus, Game } from '../types';
 
 type GameContextProps = {
-    moves: string[];
+    currentGame: Game | null;
     fenPosition: string;
-    gameStatus: GameStatus;
+    extendedGameStatus: ExtendedGameStatus | null;
     handlePieceDrop: (sourceSquare: string, targetSquare: string) => boolean;
 };
 

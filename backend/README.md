@@ -47,7 +47,7 @@ cd ..
 
 Run
 ```sh
-HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose -f docker-compose.dev.yml up -d engine keycloak
+HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose -f docker-compose.dev.yml up -d engine keycloak database adminer
 ```
 
 **Important**: To use Keycloak for the first time, you need to initially configure its admin panel, see [../keycloak/dev-admin-setup.md](../keycloak/dev-admin-setup.md) for details.
@@ -92,6 +92,56 @@ For end-to-end tests:
 ```sh
 npm run test:e2e
 ```
+
+### Using TypeORM CLI
+
+```sh
+npm run typeorm -- <...>
+```
+
+Here are some examples:
+
+#### Generating migrations
+
+```sh
+npm run typeorm -- migration:generate --pretty -d src/orm-data-source src/migration/update-post-table
+```
+
+**Shortcut**:
+
+```sh
+npm run typeorm:migration:generate -- src/migration/update-post-table
+```
+
+#### Run migrations
+
+```sh
+npm run typeorm -- migration:run -d src/orm-data-source
+```
+
+**Shortcut**:
+
+```sh
+npm run typeorm:migration:run
+```
+
+#### Revert last migration
+
+```sh
+npm run typeorm -- migration:revert -d src/orm-data-source
+```
+
+**Shortcut**:
+
+```sh
+npm run typeorm:migration:revert
+```
+
+#### TypeORM documentation
+
+See [TypeORM](https://typeorm.io/) docs for more details:
+- [Using CLI](https://typeorm.io/using-cli)
+- [Migrations](https://typeorm.io/migrations)
 
 ## Finish developing
 

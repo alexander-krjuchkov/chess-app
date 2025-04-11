@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { EngineApiService } from '../engine-api/engine-api.service';
-import { config } from '../config';
+import { config } from '../app-config';
 
 @Module({
     providers: [
