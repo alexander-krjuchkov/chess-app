@@ -28,11 +28,7 @@ export type ExtendedGameStatus =
     | PlayingExtendedGameStatus
     | FinishedExtendedGameStatus;
 
-export type ShortGameStatus =
-    | 'in_progress'
-    | 'white_wins'
-    | 'black_wins'
-    | 'draw';
+type ShortGameStatus = 'in_progress' | 'white_wins' | 'black_wins' | 'draw';
 
 export type Game = {
     id: string;
