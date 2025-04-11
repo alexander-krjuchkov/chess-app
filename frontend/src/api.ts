@@ -66,13 +66,6 @@ async function fetchWithAuth<Result = unknown>(
     }
 }
 
-// eslint-disable-next-line
-(window as any)._loadAndPrintProfileForDebug = () => {
-    fetchWithAuth('/api/auth/profile')
-        .then((profile) => console.log('Profile:', profile))
-        .catch((error) => console.error('Profile load error:', error));
-};
-
 export async function getGames(): Promise<Game[]> {
     return fetchWithAuth<Game[]>('/api/game/list');
 }
