@@ -1,7 +1,7 @@
 import { GameProvider } from '../game-provider';
 import { AccountPanel } from './AccountPanel';
 import { AuthProvider } from '../auth-provider';
-import { Game } from './Game';
+import { AuthProtected } from './AuthProtected';
 import { GameListProvider } from '../game-list-provider';
 import { PendingProvider } from '../pending-provider';
 
@@ -12,7 +12,7 @@ export function App() {
                 <GameListProvider>
                     <GameProvider>
                         <AccountPanel />
-                        <Game />
+                        <AuthProtected />
                     </GameProvider>
                 </GameListProvider>
             </PendingProvider>

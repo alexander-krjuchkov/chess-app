@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { DEFAULT_POSITION, QUEEN } from 'chess.js';
-import { makeMove as apiMakeMove } from '../api';
+import { api } from '../api';
 import { GameContext } from './GameContext';
 import { defaultApiErrorHandler } from '../utils/error-handler';
 import { getGameStatus } from '../utils/status-utils';
@@ -56,7 +56,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
             setPending(true);
 
             try {
-                const updatedGame = await apiMakeMove(currentGame.id, newMoves);
+                const updatedGame = await api.makeMove(
+                    currentGame.id,
+                    newMoves,
+                );
                 await delay(200);
 
                 setGames((prev) =>

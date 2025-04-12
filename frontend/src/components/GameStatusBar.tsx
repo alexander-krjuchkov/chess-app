@@ -27,7 +27,7 @@ function StatusInfo({ status }: { status: ExtendedGameStatus }) {
     throw new Error('Unknown game status');
 }
 
-export function StatusBar() {
+export function GameStatusBar() {
     const { extendedGameStatus } = useGameContext();
 
     if (!extendedGameStatus) {

@@ -3,7 +3,7 @@ import { useGameContext } from '../game-provider';
 import { useGameListContext } from '../game-list-provider';
 import { usePending } from '../pending-provider';
 
-export function Board() {
+export function GameBoard() {
     const { isPendingState } = usePending();
     const { selectGame } = useGameListContext();
     const { currentGame, handlePieceDrop, fenPosition } = useGameContext();

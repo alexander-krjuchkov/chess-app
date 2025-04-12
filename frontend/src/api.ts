@@ -10,78 +10,89 @@ import {
 import { Game } from './types';
 import { userManager } from './user-manager';
 
-async function fetchWithAuth<Result = unknown>(
-    url: string,
-    options?: RequestInit,
-): Promise<Result> {
-    const user = await userManager.getUser();
-    const headers = new Headers(options?.headers);
+class Api {
+    private async request<Result = unknown>(
+        url: string,
+        method: string,
+        body?: unknown,
+    ): Promise<Result> {
+        const user = await userManager.getUser();
+        const headers = new Headers();
 
-    if (user?.access_token) {
-        headers.set('Authorization', `Bearer ${user.access_token}`);
-    }
-
-    const response = await fetch(url, { ...options, headers });
-
-    if (response.ok) {
-        if (response.status === 204) {
-            return undefined as Result;
+        if (user?.access_token) {
+            headers.set('Authorization', `Bearer ${user.access_token}`);
         }
 
-        return (await response.json()) as Result;
+        if (body) {
+            headers.set('Content-Type', 'application/json');
+        }
+
+        const response = await fetch(url, {
+            method,
+            headers,
+            body: body ? JSON.stringify(body) : undefined,
+        });
+
+        if (response.ok) {
+            if (response.status === 204) {
+                return undefined as Result;
+            }
+
+            return (await response.json()) as Result;
+        }
+
+        let errorData: unknown;
+        try {
+            errorData = await response.json();
+        } catch (parseError) {
+            console.error(parseError);
+            errorData = {};
+        }
+
+        let errorCode: unknown;
+        if (
+            typeof errorData === 'object' &&
+            errorData !== null &&
+            'code' in errorData
+        ) {
+            errorCode = errorData.code;
+        }
+
+        switch (true) {
+            case response.status === 401 || response.status === 403:
+                throw new AuthError();
+            case response.status >= 500:
+                throw new ServerError();
+            case errorCode === 'outOfSync':
+                throw new OutOfSyncError();
+            case errorCode === 'gameFinished':
+                throw new GameFinishedError();
+            case errorCode === 'gameNotFound':
+                throw new GameNotFoundError();
+            case errorCode === 'invalidMove':
+                throw new InvalidMoveError();
+            default:
+                throw new UnknownApiError();
+        }
     }
 
-    let errorData: unknown;
-    try {
-        errorData = await response.json();
-    } catch (parseError) {
-        console.error(parseError);
-        errorData = {};
+    public async getGames(): Promise<Game[]> {
+        return this.request<Game[]>('/api/game/list', 'GET');
     }
 
-    let errorCode: unknown;
-    if (
-        typeof errorData === 'object' &&
-        errorData !== null &&
-        'code' in errorData
-    ) {
-        errorCode = errorData.code;
+    public async createGame(): Promise<Game> {
+        return this.request<Game>('/api/game/create', 'POST');
     }
 
-    switch (true) {
-        case response.status === 401 || response.status === 403:
-            throw new AuthError();
-        case response.status >= 500:
-            throw new ServerError();
-        case errorCode === 'outOfSync':
-            throw new OutOfSyncError();
-        case errorCode === 'gameFinished':
-            throw new GameFinishedError();
-        case errorCode === 'gameNotFound':
-            throw new GameNotFoundError();
-        case errorCode === 'invalidMove':
-            throw new InvalidMoveError();
-        default:
-            throw new UnknownApiError();
+    public async makeMove(gameId: string, moves: string[]): Promise<Game> {
+        return this.request<Game>(`/api/game/${gameId}/move`, 'PATCH', {
+            moves,
+        });
+    }
+
+    public async deleteGame(id: string): Promise<void> {
+        await this.request(`/api/game/${id}`, 'DELETE');
     }
 }
 
-export async function getGames(): Promise<Game[]> {
-    return fetchWithAuth<Game[]>('/api/game/list');
-}
-
-export async function createGame(): Promise<Game> {
-    return fetchWithAuth<Game>('/api/game/create', { method: 'POST' });
-}
-
-export async function makeMove(gameId: string, moves: string[]): Promise<Game> {
-    return fetchWithAuth<Game>(`/api/game/${gameId}/move`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ moves }),
-    });
-}
-
-export async function deleteGame(id: string): Promise<void> {
-    await fetchWithAuth(`/api/game/${id}`, { method: 'DELETE' });
-}
+export const api = new Api();

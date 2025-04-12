@@ -1,10 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Game } from '../types';
-import {
-    getGames as apiGetGames,
-    createGame as apiCreateGame,
-    deleteGame as apiDeleteGame,
-} from '../api';
+import { api } from '../api';
 import { useAuth } from '../auth-provider';
 import { defaultApiErrorHandler } from '../utils/error-handler';
 import { GameListContext } from './GameListContext';
@@ -39,7 +35,7 @@ export function GameListProvider({ children }: { children: ReactNode }) {
     const loadGames = () =>
         executeRequest(
             async () => {
-                const fetchedGames = await apiGetGames();
+                const fetchedGames = await api.getGames();
                 setGames(fetchedGames);
 
                 const lastUnfinished = fetchedGames.find(
@@ -57,7 +53,7 @@ export function GameListProvider({ children }: { children: ReactNode }) {
     const createGame = () =>
         executeRequest(
             async () => {
-                const newGame = await apiCreateGame();
+                const newGame = await api.createGame();
                 setGames((prev) => [newGame, ...prev]);
                 setCurrentGameId(newGame.id);
             },
@@ -69,7 +65,7 @@ export function GameListProvider({ children }: { children: ReactNode }) {
     const deleteGame = (id: string) =>
         executeRequest(
             async () => {
-                await apiDeleteGame(id);
+                await api.deleteGame(id);
                 setGames((prev) => prev.filter((g) => g.id !== id));
                 setCurrentGameId((prev) => (prev === id ? null : prev));
             },

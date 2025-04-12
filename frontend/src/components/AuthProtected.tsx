@@ -1,9 +1,9 @@
 import { useAuth } from '../auth-provider';
-import { Board } from './Board';
+import { GameBoard } from './GameBoard';
 import { GameList } from './GameList';
-import { StatusBar } from './StatusBar';
+import { GameStatusBar } from './GameStatusBar';
 
-export function Game() {
+export function AuthProtected() {
     const { user } = useAuth();
 
     if (!user) {
@@ -16,8 +16,8 @@ export function Game() {
                 <GameList />
             </div>
             <div style={{ flex: 'auto' }}>
-                <StatusBar />
-                <Board />
+                <GameStatusBar />
+                <GameBoard />
             </div>
         </div>
     );
