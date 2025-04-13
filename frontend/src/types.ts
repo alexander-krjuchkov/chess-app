@@ -1,3 +1,8 @@
+export type User = {
+    id: string;
+    name: string;
+};
+
 type PlayingExtendedGameStatus = {
     isGameOver: false;
     isCheck: boolean;

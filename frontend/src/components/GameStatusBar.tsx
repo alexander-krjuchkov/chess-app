@@ -1,4 +1,5 @@
-import { useGameContext } from '../game-provider';
+import { observer } from 'mobx-react-lite';
+import { gamesManager } from '../games-manager';
 import { ExtendedGameStatus } from '../types';
 
 function StatusInfo({ status }: { status: ExtendedGameStatus }) {
@@ -27,8 +28,8 @@ function StatusInfo({ status }: { status: ExtendedGameStatus }) {
     throw new Error('Unknown game status');
 }
 
-export function GameStatusBar() {
-    const { extendedGameStatus } = useGameContext();
+export const GameStatusBar = observer(function GameStatusBar() {
+    const { extendedGameStatus } = gamesManager;
 
     if (!extendedGameStatus) {
         return <></>;
@@ -39,4 +40,4 @@ export function GameStatusBar() {
             <StatusInfo status={extendedGameStatus} />
         </div>
     );
-}
+});

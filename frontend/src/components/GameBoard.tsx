@@ -1,35 +1,45 @@
+import { observer } from 'mobx-react-lite';
 import { Chessboard } from 'react-chessboard';
-import { useGameContext } from '../game-provider';
-import { useGameListContext } from '../game-list-provider';
-import { usePending } from '../pending-provider';
+import { gamesManager } from '../games-manager';
+import { pendingStore } from '../pending-store';
 
-export function GameBoard() {
-    const { isPendingState } = usePending();
-    const { selectGame } = useGameListContext();
-    const { currentGame, handlePieceDrop, fenPosition } = useGameContext();
+export const GameBoard = observer(function GameBoard() {
+    const { isPending } = pendingStore;
+
+    const currentGame = gamesManager.currentGame;
 
     if (!currentGame) {
         return <div>Select a game</div>;
     }
 
+    const fenPosition = gamesManager.fenPosition;
+    const isBoardInteractive =
+        !isPending && currentGame.status === 'in_progress';
+
+    function closeGame() {
+        gamesManager.selectGame(null);
+    }
+
+    function handlePieceDrop(
+        sourceSquare: string,
+        targetSquare: string,
+    ): boolean {
+        return gamesManager.handlePieceDrop(sourceSquare, targetSquare);
+    }
+
     return (
         <div style={{ maxWidth: '560px' }}>
             <div style={{ marginBottom: '1rem' }}>
-                <button
-                    onClick={() => selectGame(null)}
-                    disabled={isPendingState}
-                >
+                <button onClick={closeGame} disabled={isPending}>
                     Close game
                 </button>
             </div>
             <Chessboard
                 position={fenPosition}
                 onPieceDrop={handlePieceDrop}
-                arePiecesDraggable={
-                    currentGame.status === 'in_progress' && !isPendingState
-                }
+                arePiecesDraggable={isBoardInteractive}
                 autoPromoteToQueen={true}
             />
         </div>
     );
-}
+});

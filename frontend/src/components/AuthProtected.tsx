@@ -1,10 +1,11 @@
-import { useAuth } from '../auth-provider';
+import { observer } from 'mobx-react-lite';
+import { authManager } from '../auth-manager';
 import { GameBoard } from './GameBoard';
 import { GameList } from './GameList';
 import { GameStatusBar } from './GameStatusBar';
 
-export function AuthProtected() {
-    const { user } = useAuth();
+export const AuthProtected = observer(function AuthProtected() {
+    const { user } = authManager;
 
     if (!user) {
         return <>Please sign in to continue</>;
@@ -21,4 +22,4 @@ export function AuthProtected() {
             </div>
         </div>
     );
-}
+});

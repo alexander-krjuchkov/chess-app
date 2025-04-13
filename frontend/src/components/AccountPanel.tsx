@@ -1,5 +1,6 @@
+import { observer } from 'mobx-react-lite';
 import { userManager } from '../user-manager';
-import { useAuth } from '../auth-provider';
+import { authManager } from '../auth-manager';
 
 const login = () => {
     void userManager.signinRedirect();
@@ -21,12 +22,13 @@ const LogoutButton = () => (
     </button>
 );
 
-export function AccountPanel() {
-    const { user } = useAuth();
+export const AccountPanel = observer(function AccountPanel() {
+    const user = authManager.user;
+
     return (
         <div>
-            {user && user.profile.preferred_username}
+            {user && user.name}
             {user ? <LogoutButton /> : <LoginButton />}
         </div>
     );
-}
+});
