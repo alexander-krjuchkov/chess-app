@@ -1,8 +1,3 @@
-export type User = {
-    id: string;
-    name: string;
-};
-
 type PlayingExtendedGameStatus = {
     isGameOver: false;
     isCheck: boolean;
@@ -32,14 +27,3 @@ type FinishedExtendedGameStatus =
 export type ExtendedGameStatus =
     | PlayingExtendedGameStatus
     | FinishedExtendedGameStatus;
-
-type ShortGameStatus = 'in_progress' | 'white_wins' | 'black_wins' | 'draw';
-
-export type Game = {
-    id: string;
-    userId: string;
-    moves: string[];
-    status: ShortGameStatus;
-    createdAt: string;
-    updatedAt: string;
-};
