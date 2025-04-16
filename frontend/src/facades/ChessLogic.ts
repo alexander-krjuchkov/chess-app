@@ -1,6 +1,6 @@
 import { Chess, QUEEN } from 'chess.js';
-import { GameStatus } from './GameStatus';
-import { CoordinateNotationMove } from './types';
+import { ChessStatus } from './ChessStatus';
+import { CoordinateNotationMove } from '../types';
 
 /**
  * Facade for chess.js library
@@ -46,8 +46,8 @@ export class ChessLogic {
         return this.chess.fen();
     }
 
-    public get status(): GameStatus {
-        return GameStatus.fromChess(this.chess);
+    public get status(): ChessStatus {
+        return ChessStatus.fromChess(this.chess);
     }
 
     public get moves(): string[] {

@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { gamesManager } from '../games-manager';
-import { pendingStore } from '../pending-store';
+import { gamesManager, pendingStore } from '../stores';
 import { PlainGame } from '../types';
 
 function GameDescription({ game }: { game: PlainGame }) {

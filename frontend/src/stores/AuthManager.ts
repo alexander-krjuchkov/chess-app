@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
-import { User } from './types';
-import { userManager } from './user-manager';
-import { config } from './config';
+import { User } from '../types';
+import { userManager } from '../user-manager';
+import { config } from '../config';
 
 export class AuthManager {
     private _user: User | null = null;
@@ -58,6 +58,12 @@ export class AuthManager {
             return null;
         }
     }
-}
 
-export const authManager = new AuthManager();
+    async signOutRedirect() {
+        await userManager.signoutRedirect();
+    }
+
+    async signInRedirect() {
+        await userManager.signinRedirect();
+    }
+}

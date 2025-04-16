@@ -3,7 +3,7 @@ import { Chess } from 'chess.js';
 /**
  * Extended game status
  */
-export class GameStatus {
+export class ChessStatus {
     constructor(
         public readonly isGameOver: boolean,
 
@@ -22,7 +22,7 @@ export class GameStatus {
             | undefined,
     ) {}
 
-    public static fromChess(chess: Chess): GameStatus {
+    public static fromChess(chess: Chess): ChessStatus {
         const isGameOver = chess.isGameOver();
         const turn = chess.turn() === 'w' ? 'white' : 'black';
         const isCheck = chess.isCheck();
@@ -32,7 +32,7 @@ export class GameStatus {
             const winner = undefined;
             const drawReason = undefined;
 
-            return new GameStatus(
+            return new ChessStatus(
                 isGameOver,
                 turn,
                 isCheck,
@@ -47,7 +47,7 @@ export class GameStatus {
             const winner = chess.turn() === 'w' ? 'black' : 'white';
             const drawReason = undefined;
 
-            return new GameStatus(
+            return new ChessStatus(
                 isGameOver,
                 turn,
                 isCheck,
@@ -73,7 +73,7 @@ export class GameStatus {
                 }
             })();
 
-            return new GameStatus(
+            return new ChessStatus(
                 isGameOver,
                 turn,
                 isCheck,

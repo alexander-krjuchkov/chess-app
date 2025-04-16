@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { authManager } from '../auth-manager';
+import { authManager } from '../stores';
 import { GameBoard } from './GameBoard';
 import { GameList } from './GameList';
 import { GameStatusBar } from './GameStatusBar';

@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Chessboard } from 'react-chessboard';
-import { gamesManager } from '../games-manager';
-import { pendingStore } from '../pending-store';
+import { gamesManager, pendingStore } from '../stores';
 
 export const GameBoard = observer(function GameBoard() {
     const { isPending } = pendingStore;

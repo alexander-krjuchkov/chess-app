@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { gamesManager } from '../games-manager';
-import { GameStatus } from '../GameStatus';
+import { gamesManager } from '../stores';
+import { ChessStatus } from '../facades';
 
-function StatusView({ status }: { status: GameStatus }) {
+function StatusView({ status }: { status: ChessStatus }) {
     if (!status.isGameOver) {
         return `Turn: ${status.turn} ${status.turn === 'white' ? '⬜' : '⬛'}${status.isCheck ? ' (Check 🚨)' : ''}`;
     }

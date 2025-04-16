@@ -1,7 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { CoordinateNotationMove, PlainGame } from './types';
-import { GameStatus } from './GameStatus';
-import { ChessLogic } from './ChessLogic';
+import { CoordinateNotationMove, PlainGame } from '../types';
+import { ChessLogic, ChessStatus } from '../facades';
 
 /**
  * Observable and editable game model
@@ -29,7 +28,7 @@ export class GameModel {
      */
     private calculatedState: {
         fenPosition: string;
-        status: GameStatus;
+        status: ChessStatus;
         moves: string[];
     };
 
@@ -118,7 +117,7 @@ export class GameModel {
         return this.calculatedState.fenPosition;
     }
 
-    public get status(): GameStatus {
+    public get status(): ChessStatus {
         return this.calculatedState.status;
     }
 

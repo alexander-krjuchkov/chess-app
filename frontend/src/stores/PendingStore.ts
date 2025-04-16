@@ -16,5 +16,3 @@ export class PendingStore {
         return this._isPending;
     }
 }
-
-export const pendingStore = new PendingStore();

@@ -1,13 +1,13 @@
 import { makeAutoObservable, reaction } from 'mobx';
-import { PlainGame } from './types';
-import { api } from './api';
-import { defaultApiErrorHandler } from './utils/error-handler';
-import { delay } from './utils/delay';
-import { authManager, AuthManager } from './auth-manager';
-import { pendingStore, PendingStore } from './pending-store';
-import { GameModel } from './GameModel';
+import { PlainGame } from '../types';
+import { api } from '../services';
+import { defaultApiErrorHandler } from '../utils/error-handler';
+import { delay } from '../utils/delay';
+import { AuthManager } from './AuthManager';
+import { PendingStore } from './PendingStore';
+import { GameModel } from '../models';
 
-class GamesManager {
+export class GamesManager {
     private _games: PlainGame[] = [];
     private _currentGame: GameModel | null = null;
 
@@ -172,5 +172,3 @@ class GamesManager {
         return this._currentGame;
     }
 }
-
-export const gamesManager = new GamesManager(authManager, pendingStore);

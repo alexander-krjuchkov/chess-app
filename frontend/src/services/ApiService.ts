@@ -6,11 +6,11 @@ import {
     OutOfSyncError,
     ServerError,
     UnknownApiError,
-} from './errors/api-errors';
-import { PlainGame } from './types';
-import { userManager } from './user-manager';
+} from '../errors/api-errors';
+import { PlainGame } from '../types';
+import { userManager } from '../user-manager';
 
-class Api {
+export class ApiService {
     private async request<Result = unknown>(
         url: string,
         method: string,
@@ -94,5 +94,3 @@ class Api {
         await this.request(`/api/game/${id}`, 'DELETE');
     }
 }
-
-export const api = new Api();

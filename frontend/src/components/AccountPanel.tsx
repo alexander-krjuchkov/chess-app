@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { userManager } from '../user-manager';
-import { authManager } from '../auth-manager';
+import { authManager } from '../stores';
 
 const login = () => {
-    void userManager.signinRedirect();
+    void authManager.signInRedirect();
 };
 
 const LoginButton = () => (
@@ -13,7 +12,7 @@ const LoginButton = () => (
 );
 
 const logout = () => {
-    void userManager.signoutRedirect();
+    void authManager.signOutRedirect();
 };
 
 const LogoutButton = () => (

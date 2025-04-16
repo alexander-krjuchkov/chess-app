@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { authManager } from '../auth-manager';
+import { authManager } from '../stores';
 
 /**
  * Handles sign-in redirect callback from authorization server.
