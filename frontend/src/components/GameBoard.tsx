@@ -6,15 +6,14 @@ import { pendingStore } from '../pending-store';
 export const GameBoard = observer(function GameBoard() {
     const { isPending } = pendingStore;
 
-    const currentGame = gamesManager.currentGame;
+    const game = gamesManager.currentGame;
 
-    if (!currentGame) {
+    if (!game) {
         return <div>Select a game</div>;
     }
 
-    const fenPosition = gamesManager.fenPosition;
-    const isBoardInteractive =
-        !isPending && currentGame.status === 'in_progress';
+    const fenPosition = game.fenPosition;
+    const isBoardInteractive = !isPending && !game.status.isGameOver;
 
     function closeGame() {
         gamesManager.selectGame(null);

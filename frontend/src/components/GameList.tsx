@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { gamesManager } from '../games-manager';
 import { pendingStore } from '../pending-store';
-import { Game } from '../types';
+import { PlainGame } from '../types';
 
-function GameDescription({ game }: { game: Game }) {
+function GameDescription({ game }: { game: PlainGame }) {
     const tag = game.id.slice(0, 7);
     const status = (() => {
         switch (game.status) {
@@ -49,7 +49,7 @@ export const GameList = observer(function GameList() {
             acc[date].push(game);
             return acc;
         },
-        {} as Record<string, Game[]>,
+        {} as Record<string, PlainGame[]>,
     );
 
     return (

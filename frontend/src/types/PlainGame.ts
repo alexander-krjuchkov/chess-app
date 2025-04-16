@@ -1,6 +1,6 @@
-type ShortGameStatus = 'in_progress' | 'white_wins' | 'black_wins' | 'draw';
+import { ShortGameStatus } from './ShortGameStatus';
 
-export type Game = {
+export type PlainGame = {
     id: string;
     userId: string;
     moves: string[];

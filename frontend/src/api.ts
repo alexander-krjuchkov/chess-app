@@ -7,7 +7,7 @@ import {
     ServerError,
     UnknownApiError,
 } from './errors/api-errors';
-import { Game } from './types';
+import { PlainGame } from './types';
 import { userManager } from './user-manager';
 
 class Api {
@@ -76,16 +76,16 @@ class Api {
         }
     }
 
-    public async getGames(): Promise<Game[]> {
-        return this.request<Game[]>('/api/game/list', 'GET');
+    public async getGames(): Promise<PlainGame[]> {
+        return this.request<PlainGame[]>('/api/game/list', 'GET');
     }
 
-    public async createGame(): Promise<Game> {
-        return this.request<Game>('/api/game/create', 'POST');
+    public async createGame(): Promise<PlainGame> {
+        return this.request<PlainGame>('/api/game/create', 'POST');
     }
 
-    public async makeMove(gameId: string, moves: string[]): Promise<Game> {
-        return this.request<Game>(`/api/game/${gameId}/move`, 'PATCH', {
+    public async makeMove(gameId: string, moves: string[]): Promise<PlainGame> {
+        return this.request<PlainGame>(`/api/game/${gameId}/move`, 'PATCH', {
             moves,
         });
     }
