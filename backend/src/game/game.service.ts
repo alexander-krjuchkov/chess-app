@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Chess, WHITE } from 'chess.js';
 import {
     GameAccessDeniedError,
     GameFinishedError,
@@ -11,7 +10,7 @@ import { EngineApiInterface } from '../engine-api/engine-api.interface';
 import { Repository } from 'typeorm';
 import { Game } from './game.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { GameStatus } from './game-status';
+import { GameModel } from './game.model';
 
 @Injectable()
 export class GameService {
@@ -56,55 +55,41 @@ export class GameService {
         moves: string[],
         userId: string,
     ): Promise<Game> {
-        const game = await this.getUserGameById(gameId, userId);
-        if (game.status !== 'in_progress') {
+        const gameEntity = await this.getUserGameById(gameId, userId);
+
+        if (gameEntity.status !== 'in_progress') {
             throw new GameFinishedError();
         }
 
         if (
-            game.moves.length !== moves.length - 1 ||
-            !game.moves.every((move, index) => move === moves[index])
+            gameEntity.moves.length !== moves.length - 1 ||
+            !gameEntity.moves.every((move, index) => move === moves[index])
         ) {
             throw new OutOfSyncError();
         }
-        const chess = new Chess();
-        game.moves.forEach((move) => chess.move(move));
+
         const lastMove = moves.at(-1);
         if (!lastMove) {
             throw new InvalidMoveError();
         }
-        try {
-            chess.move(lastMove);
-        } catch (e) {
-            if (e instanceof Error && e.message.includes('Invalid move')) {
-                throw new InvalidMoveError();
-            }
-            throw e;
-        }
-        game.moves = chess.history();
-        game.status = this.determineStatus(chess);
-        if (game.status === 'in_progress') {
-            const fen = chess.fen();
-            const nextMove = await this.engineApiService.getNextMove({ fen });
-            chess.move(nextMove);
-            game.moves = chess.history();
-            game.status = this.determineStatus(chess);
-        }
-        await this.gameRepository.save(game);
-        return game;
-    }
 
-    private determineStatus(chess: Chess): GameStatus {
-        if (!chess.isGameOver()) {
-            return 'in_progress';
+        const gameModel = new GameModel(gameEntity);
+
+        if (!gameModel.isValidMove(lastMove)) {
+            throw new InvalidMoveError();
         }
-        if (chess.isDraw()) {
-            return 'draw';
+
+        gameModel.move(lastMove);
+
+        if (gameModel.isInProgress) {
+            const fen = gameModel.fen;
+            const nextMove = await this.engineApiService.getNextMove({ fen });
+            gameModel.move(nextMove);
         }
-        if (chess.turn() === WHITE) {
-            return 'black_wins';
-        }
-        return 'white_wins';
+
+        await this.gameRepository.save(gameEntity);
+
+        return gameEntity;
     }
 
     async deleteGame(id: string, userId: string): Promise<void> {

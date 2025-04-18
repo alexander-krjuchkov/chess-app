@@ -1,10 +1,11 @@
-import { useAuth } from '../auth-provider';
-import { Board } from './Board';
+import { observer } from 'mobx-react-lite';
+import { authManager } from '../stores';
+import { GameBoard } from './GameBoard';
 import { GameList } from './GameList';
-import { StatusBar } from './StatusBar';
+import { GameStatusBar } from './GameStatusBar';
 
-export function Game() {
-    const { user } = useAuth();
+export const AuthProtected = observer(function AuthProtected() {
+    const { user } = authManager;
 
     if (!user) {
         return <>Please sign in to continue</>;
@@ -16,9 +17,9 @@ export function Game() {
                 <GameList />
             </div>
             <div style={{ flex: 'auto' }}>
-                <StatusBar />
-                <Board />
+                <GameStatusBar />
+                <GameBoard />
             </div>
         </div>
     );
-}
+});

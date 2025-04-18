@@ -1,7 +1,8 @@
-import { useGameContext } from '../game-provider';
-import { ExtendedGameStatus } from '../types';
+import { observer } from 'mobx-react-lite';
+import { gamesManager } from '../stores';
+import { ChessStatus } from '../facades';
 
-function StatusInfo({ status }: { status: ExtendedGameStatus }) {
+function StatusView({ status }: { status: ChessStatus }) {
     if (!status.isGameOver) {
         return `Turn: ${status.turn} ${status.turn === 'white' ? '⬜' : '⬛'}${status.isCheck ? ' (Check 🚨)' : ''}`;
     }
@@ -19,7 +20,7 @@ function StatusInfo({ status }: { status: ExtendedGameStatus }) {
         };
 
         const reasonLabel =
-            reasonCodeToLabelMap[status.drawReason] ?? 'unknown reason';
+            reasonCodeToLabelMap[status.drawReason ?? ''] ?? 'unknown reason';
 
         return `Game Over: Draw🤝 due to ${reasonLabel}`;
     }
@@ -27,16 +28,16 @@ function StatusInfo({ status }: { status: ExtendedGameStatus }) {
     throw new Error('Unknown game status');
 }
 
-export function StatusBar() {
-    const { extendedGameStatus } = useGameContext();
+export const GameStatusBar = observer(function GameStatusBar() {
+    const game = gamesManager.currentGame;
 
-    if (!extendedGameStatus) {
+    if (!game) {
         return <></>;
     }
 
     return (
         <div>
-            <StatusInfo status={extendedGameStatus} />
+            <StatusView status={game.status} />
         </div>
     );
-}
+});

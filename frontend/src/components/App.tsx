@@ -1,21 +1,14 @@
-import { GameProvider } from '../game-provider';
 import { AccountPanel } from './AccountPanel';
-import { AuthProvider } from '../auth-provider';
-import { Game } from './Game';
-import { GameListProvider } from '../game-list-provider';
-import { PendingProvider } from '../pending-provider';
+import { AuthProtected } from './AuthProtected';
+import { useSignInRedirectCallback } from '../hooks';
 
 export function App() {
+    useSignInRedirectCallback();
+
     return (
-        <AuthProvider>
-            <PendingProvider>
-                <GameListProvider>
-                    <GameProvider>
-                        <AccountPanel />
-                        <Game />
-                    </GameProvider>
-                </GameListProvider>
-            </PendingProvider>
-        </AuthProvider>
+        <>
+            <AccountPanel />
+            <AuthProtected />
+        </>
     );
 }

@@ -1,8 +1,8 @@
-import { useGameListContext } from '../game-list-provider';
-import { usePending } from '../pending-provider';
-import { Game } from '../types';
+import { observer } from 'mobx-react-lite';
+import { gamesManager, pendingStore } from '../stores';
+import { PlainGame } from '../types';
 
-function GameDescription({ game }: { game: Game }) {
+function GameDescription({ game }: { game: PlainGame }) {
     const tag = game.id.slice(0, 7);
     const status = (() => {
         switch (game.status) {
@@ -24,11 +24,22 @@ function GameDescription({ game }: { game: Game }) {
     );
 }
 
-export function GameList() {
-    const { isPendingState } = usePending();
-    const { games, createGame, deleteGame, selectGame } = useGameListContext();
+export const GameList = observer(function GameList() {
+    const { isPending } = pendingStore;
 
-    const gamesByDate = games.reduce(
+    function createGame() {
+        void gamesManager.createGame();
+    }
+
+    function selectGame(gameId: string) {
+        gamesManager.selectGame(gameId);
+    }
+
+    function deleteGame(gameId: string) {
+        void gamesManager.deleteGame(gameId);
+    }
+
+    const gamesByDate = gamesManager.games.reduce(
         (acc, game) => {
             const date = new Date(game.createdAt).toLocaleDateString();
             if (!acc[date]) {
@@ -37,13 +48,13 @@ export function GameList() {
             acc[date].push(game);
             return acc;
         },
-        {} as Record<string, Game[]>,
+        {} as Record<string, PlainGame[]>,
     );
 
     return (
         <div>
             <h2>Your games</h2>
-            <button onClick={createGame} disabled={isPendingState}>
+            <button onClick={createGame} disabled={isPending}>
                 New game
             </button>
             {Object.entries(gamesByDate).map(([date, games]) => (
@@ -55,13 +66,13 @@ export function GameList() {
                                 <GameDescription game={game} />
                                 <button
                                     onClick={() => selectGame(game.id)}
-                                    disabled={isPendingState}
+                                    disabled={isPending}
                                 >
                                     Select
                                 </button>
                                 <button
                                     onClick={() => deleteGame(game.id)}
-                                    disabled={isPendingState}
+                                    disabled={isPending}
                                 >
                                     Delete
                                 </button>
@@ -72,4 +83,4 @@ export function GameList() {
             ))}
         </div>
     );
-}
+});

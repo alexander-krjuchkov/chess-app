@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { userManager } from '../user-manager';
-import { config } from '../config';
+import { authManager } from '../stores';
 
 /**
  * Handles sign-in redirect callback from authorization server.
@@ -16,17 +15,6 @@ export function useSignInRedirectCallback() {
         }
         processStarted.current = true;
 
-        const handleAuthCallback = async () => {
-            if (window.location.pathname !== config.AUTH_CLIENT_REDIRECT_PATH) {
-                return;
-            }
-            try {
-                await userManager.signinRedirectCallback();
-            } finally {
-                window.history.replaceState(null, '', '/');
-            }
-        };
-
-        void handleAuthCallback();
+        void authManager.handleSignInRedirect();
     }, []);
 }
