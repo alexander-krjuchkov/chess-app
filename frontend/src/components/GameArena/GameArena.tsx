@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import { gamesManager } from '../stores';
+import { gamesManager } from '../../stores';
 import { Box, Typography } from '@mui/material';
-import { GameStatus } from './GameStatus';
-import { GameBoard } from './GameBoard';
+import { GameStatus } from '../GameStatus';
+import { GameBoard } from '../GameBoard';
 import styles from './GameArena.module.css';
 
 export const GameArena = observer(function GameArena() {

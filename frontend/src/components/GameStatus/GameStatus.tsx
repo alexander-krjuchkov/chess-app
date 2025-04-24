@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
-import { gamesManager } from '../stores';
+import { gamesManager } from '../../stores';
 import { Paper, Typography, Chip, Box } from '@mui/material';
-import { ChessStatus } from '../facades';
+import { ChessStatus } from '../../facades';
 import styles from './GameStatus.module.css';
 
 function getStatusDetails(status: ChessStatus) {

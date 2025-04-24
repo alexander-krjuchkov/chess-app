@@ -4,9 +4,9 @@ import {
     History as HistoryIcon,
     Close as CloseIcon,
 } from '@mui/icons-material';
-import { GameList } from './GameList';
-import { useIsMobile } from '../hooks/useIsMobile';
-import { GameArena } from './GameArena';
+import { GameList } from '../GameList';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { GameArena } from '../GameArena';
 import styles from './AuthenticatedContent.module.css';
 
 export function AuthenticatedContent() {

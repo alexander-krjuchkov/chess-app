@@ -1,29 +1,25 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { gamesManager, pendingStore } from '../stores';
-import { PlainGame } from '../types';
+import { gamesManager, pendingStore } from '../../stores';
+import { PlainGame } from '../../types';
 import {
-    List,
     ListItem,
     ListItemText,
     IconButton,
     Menu,
     MenuItem,
     Typography,
-    Divider,
     Box,
     Chip,
     ListItemButton,
     ListItemIcon,
-    Button,
 } from '@mui/material';
 import {
-    Add as AddIcon,
     MoreHoriz as MoreHorizIcon,
     Delete as DeleteIcon,
 } from '@mui/icons-material';
-import { getGameOpeningLabel } from '../utils/opening-label';
-import styles from './GameList.module.css';
+import { getGameOpeningLabel } from '../../utils/opening-label';
+import styles from './GameListItem.module.css';
 
 const GameListItemDescription = observer(function GameListItemDescription({
     game,
@@ -67,7 +63,7 @@ const GameListItemDescription = observer(function GameListItemDescription({
     );
 });
 
-const GameListItem = observer(function GameListItem({
+export const GameListItem = observer(function GameListItem({
     game,
     onSelect,
 }: {
@@ -125,63 +121,5 @@ const GameListItem = observer(function GameListItem({
 
             {menu}
         </ListItem>
-    );
-});
-
-export const GameList = observer(function GameList({
-    onSelect = () => {},
-}: {
-    onSelect?: () => void;
-}) {
-    const { isPending } = pendingStore;
-
-    function createGame() {
-        void gamesManager.createGame();
-        onSelect();
-    }
-
-    const gamesByDate = gamesManager.games.reduce(
-        (acc, game) => {
-            const date = new Date(game.createdAt).toLocaleDateString();
-            if (!acc[date]) {
-                acc[date] = [];
-            }
-            acc[date].push(game);
-            return acc;
-        },
-        {} as Record<string, PlainGame[]>,
-    );
-
-    return (
-        <Box>
-            <Box className={styles.createGameBlock}>
-                <Button
-                    color='inherit'
-                    startIcon={<AddIcon />}
-                    onClick={createGame}
-                    disabled={isPending}
-                    className={styles.createGameButton}
-                >
-                    New game
-                </Button>
-            </Box>
-            {Object.entries(gamesByDate).map(([date, games]) => (
-                <Box key={date}>
-                    <Typography variant='subtitle2' className={styles.date}>
-                        {date}
-                    </Typography>
-                    <List>
-                        {games.map((game) => (
-                            <GameListItem
-                                key={game.id}
-                                game={game}
-                                onSelect={onSelect}
-                            />
-                        ))}
-                    </List>
-                    <Divider />
-                </Box>
-            ))}
-        </Box>
     );
 });

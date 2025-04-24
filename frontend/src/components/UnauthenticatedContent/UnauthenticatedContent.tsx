@@ -1,6 +1,6 @@
 import { Box, Typography, Button } from '@mui/material';
 import { Login as LoginIcon } from '@mui/icons-material';
-import { authManager } from '../stores';
+import { authManager } from '../../stores';
 import styles from './UnauthenticatedContent.module.css';
 
 const login = () => {

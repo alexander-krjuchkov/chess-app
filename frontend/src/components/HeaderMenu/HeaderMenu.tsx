@@ -6,11 +6,11 @@ import {
     Logout as LogoutIcon,
     History as HistoryIcon,
 } from '@mui/icons-material';
-import { authManager, gamesManager, pendingStore } from '../stores';
-import { GameList } from './GameList';
-import { HeaderButton } from './HeaderButton';
-import { useIsMobile } from '../hooks/useIsMobile';
-import { Modal } from './Modal';
+import { authManager, gamesManager, pendingStore } from '../../stores';
+import { GameList } from '../GameList';
+import { HeaderButton } from '../HeaderButton';
+import { useIsMobile } from '../../hooks/useIsMobile';
+import { Modal } from '../Modal';
 
 export const HeaderMenu = observer(function HeaderMenu() {
     const user = authManager.user;

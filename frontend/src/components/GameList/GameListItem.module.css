@@ -12,17 +12,3 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
-.create-game-block {
-    padding: 16px;
-    padding-bottom: 0;
-}
-
-.create-game-button {
-    text-transform: none;
-}
-
-.date {
-    padding-left: 16px;
-    padding-top: 16px;
-}

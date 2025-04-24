@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Chessboard } from 'react-chessboard';
-import { gamesManager, pendingStore } from '../stores';
+import { gamesManager, pendingStore } from '../../stores';
 import { Box } from '@mui/material';
 import styles from './GameBoard.module.css';
 
