@@ -1,3 +1,8 @@
+.game_selected {
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
 .game-description {
     padding-right: 16px;
 }

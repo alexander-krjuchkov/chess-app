@@ -106,6 +106,9 @@ export const GameListItem = observer(function GameListItem({
         </Menu>
     );
 
+    const selectedGame = gamesManager.currentGame;
+    const isSelected = !!selectedGame && selectedGame.id === game.id;
+
     return (
         <ListItem
             secondaryAction={
@@ -115,7 +118,11 @@ export const GameListItem = observer(function GameListItem({
             }
             disablePadding
         >
-            <ListItemButton onClick={handleSelect} disabled={isPending}>
+            <ListItemButton
+                onClick={handleSelect}
+                disabled={isPending}
+                className={isSelected ? styles.gameSelected : ''}
+            >
                 <GameListItemDescription game={game} />
             </ListItemButton>
 
