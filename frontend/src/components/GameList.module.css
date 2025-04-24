@@ -1,0 +1,28 @@
+.game-description {
+    padding-right: 16px;
+}
+
+.game-description__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-description__footer {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.create-game-block {
+    padding: 16px;
+    padding-bottom: 0;
+}
+
+.create-game-button {
+    text-transform: none;
+}
+
+.date {
+    padding-left: 16px;
+    padding-top: 16px;
+}

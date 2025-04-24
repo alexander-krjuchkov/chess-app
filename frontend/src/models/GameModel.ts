@@ -124,4 +124,8 @@ export class GameModel {
     public get moves(): string[] {
         return this.calculatedState.moves;
     }
+
+    public get createdAt(): string {
+        return this.sourceGame.createdAt;
+    }
 }

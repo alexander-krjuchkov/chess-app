@@ -1,0 +1,14 @@
+.main-footer {
+    position: static;
+    background: white;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 1px 1px 3px black;
+}
+
+@media (min-width: 960px) {
+    .main-footer {
+        position: sticky;
+        bottom: 0;
+    }
+}

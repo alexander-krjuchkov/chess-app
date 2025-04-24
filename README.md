@@ -98,7 +98,7 @@ For detailed setup and development instructions, follow service-specific guides:
 
 - [x] Add auth.
 - [x] Implement saving of user games.
-- [ ] Design user interface.
+- [x] Design user interface.
 - [ ] Add localization.
 
 ## License

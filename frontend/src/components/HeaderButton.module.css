@@ -1,0 +1,18 @@
+.button {
+    text-transform: none;
+    min-width: unset;
+}
+
+.button__text {
+    display: none;
+}
+
+@media (min-width: 960px) {
+    .button {
+        margin-right: 16px;
+    }
+
+    .button__text {
+        display: inline;
+    }
+}
