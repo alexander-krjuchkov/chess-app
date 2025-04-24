@@ -1,0 +1,9 @@
+.container {
+    flex: 1;
+    text-align: center;
+    padding: 32px;
+}
+
+.message {
+    margin-bottom: 16px;
+}

@@ -1,0 +1,33 @@
+.main-header {
+    z-index: 1201;
+}
+
+.toolbar {
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo__icon {
+    height: 1.75em;
+    margin-right: 1em;
+}
+
+.logo__text {
+    display: none;
+}
+
+@media (min-width: 960px) {
+    .logo__icon {
+        display: none;
+    }
+
+    .logo__text {
+        display: block;
+        height: 1.75em;
+        margin-right: 1em;
+    }
+}

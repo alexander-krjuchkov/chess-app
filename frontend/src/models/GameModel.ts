@@ -30,6 +30,7 @@ export class GameModel {
         fenPosition: string;
         status: ChessStatus;
         moves: string[];
+        pgn: string;
     };
 
     public constructor(sourceGame: PlainGame) {
@@ -48,6 +49,7 @@ export class GameModel {
             fenPosition: this.chess.fenPosition,
             status: this.chess.status,
             moves: this.chess.moves,
+            pgn: this.chess.pgn,
         };
     }
 
@@ -123,5 +125,13 @@ export class GameModel {
 
     public get moves(): string[] {
         return this.calculatedState.moves;
+    }
+
+    public get pgn(): string {
+        return this.calculatedState.pgn;
+    }
+
+    public get createdAt(): string {
+        return this.sourceGame.createdAt;
     }
 }

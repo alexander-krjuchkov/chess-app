@@ -1,0 +1,41 @@
+.container {
+    flex: 1;
+    display: flex;
+}
+
+.drawer {
+    transition: width 225ms;
+    width: 0;
+
+    --drawer-width: 300px;
+    --header-height: 64px;
+    --footer-height: 52px;
+}
+
+.drawer_open {
+    width: var(--drawer-width);
+}
+
+.drawer :global(.MuiDrawer-paper) {
+    width: var(--drawer-width);
+    top: var(--header-height);
+    height: calc(100vh - var(--header-height) - var(--footer-height) - 1px);
+    z-index: 1200;
+}
+
+.drawer__header {
+    position: sticky;
+    top: 0;
+    background: white;
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px;
+    z-index: 1;
+    box-shadow: 0 -1px 3px black;
+}
+
+.open-button {
+    position: fixed;
+    top: 80px;
+    left: 16px;
+}

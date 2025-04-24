@@ -1,0 +1,15 @@
+.modal :global(.MuiDialog-paper) {
+    background-color: #ffffffcc;
+    backdrop-filter: brightness(2) blur(15px);
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    background: white;
+}
+
+.modal__title-text {
+    flex: 1;
+    text-align: center;
+}

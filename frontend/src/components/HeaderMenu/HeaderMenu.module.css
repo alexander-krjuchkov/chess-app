@@ -1,0 +1,8 @@
+.pgn-container {
+    display: flex;
+    justify-content: center;
+}
+
+.pgn-text {
+    white-space: pre-wrap;
+}

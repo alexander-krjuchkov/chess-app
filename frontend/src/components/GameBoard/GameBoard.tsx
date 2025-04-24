@@ -1,22 +1,19 @@
 import { observer } from 'mobx-react-lite';
 import { Chessboard } from 'react-chessboard';
-import { gamesManager, pendingStore } from '../stores';
+import { gamesManager, pendingStore } from '../../stores';
+import { Box } from '@mui/material';
+import styles from './GameBoard.module.css';
 
 export const GameBoard = observer(function GameBoard() {
     const { isPending } = pendingStore;
-
     const game = gamesManager.currentGame;
 
     if (!game) {
-        return <div>Select a game</div>;
+        return <>No game selected</>;
     }
 
     const fenPosition = game.fenPosition;
     const isBoardInteractive = !isPending && !game.status.isGameOver;
-
-    function closeGame() {
-        gamesManager.selectGame(null);
-    }
 
     function handlePieceDrop(
         sourceSquare: string,
@@ -26,18 +23,13 @@ export const GameBoard = observer(function GameBoard() {
     }
 
     return (
-        <div style={{ maxWidth: '560px' }}>
-            <div style={{ marginBottom: '1rem' }}>
-                <button onClick={closeGame} disabled={isPending}>
-                    Close game
-                </button>
-            </div>
+        <Box className={styles.board}>
             <Chessboard
                 position={fenPosition}
                 onPieceDrop={handlePieceDrop}
                 arePiecesDraggable={isBoardInteractive}
                 autoPromoteToQueen={true}
             />
-        </div>
+        </Box>
     );
 });

@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import typedCssModulesPlugin from 'vite-plugin-typed-css-modules';
 
 declare const process: {
     env: Record<string, string>;
@@ -14,7 +15,7 @@ const viteServerHost = isDocker;
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [react()],
+    plugins: [react(), typedCssModulesPlugin()],
     server: {
         port: 5173, // this port is also involved in the auth client settings
         strictPort: true,
@@ -22,5 +23,10 @@ export default defineConfig({
             '/api': backendOrigin,
         },
         host: viteServerHost,
+    },
+    css: {
+        modules: {
+            localsConvention: 'camelCaseOnly',
+        },
     },
 });

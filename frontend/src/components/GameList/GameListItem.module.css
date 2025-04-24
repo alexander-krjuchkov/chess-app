@@ -1,0 +1,19 @@
+.game_selected {
+    background-color: rgba(0, 0, 0, 0.08);
+    border-radius: 8px;
+}
+
+.game-description {
+    padding-right: 16px;
+}
+
+.game-description__header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.game-description__footer {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

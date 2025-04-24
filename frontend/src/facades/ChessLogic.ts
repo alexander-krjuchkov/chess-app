@@ -53,4 +53,8 @@ export class ChessLogic {
     public get moves(): string[] {
         return this.chess.history();
     }
+
+    public get pgn(): string {
+        return this.chess.pgn({ maxWidth: 5 });
+    }
 }

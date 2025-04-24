@@ -1,0 +1,10 @@
+.status-bar {
+    width: 100%;
+    max-width: min(560px, 100vw - 50px);
+    padding: 16px;
+}
+
+.status-bar__header {
+    display: flex;
+    justify-content: space-between;
+}
