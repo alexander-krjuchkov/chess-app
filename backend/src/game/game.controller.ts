@@ -27,6 +27,7 @@ import { EngineApiError } from '../engine-api/engine-api.errors';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../auth/user.decorator';
 import { RequestUser } from '../auth/auth.types';
+import { MoveRequestDto } from './dto/move-request.dto';
 
 @Controller('game')
 @UseGuards(AuthGuard())
@@ -46,10 +47,9 @@ export class GameController {
     @Patch(':id/move')
     async makeMove(
         @Param('id') id: string,
-        @Body() { moves }: { moves: string[] },
+        @Body() { moves }: MoveRequestDto,
         @User() { userId }: RequestUser,
     ) {
-        // TODO: validate request
         try {
             return await this.gameService.makeMove(id, moves, userId);
         } catch (e) {
