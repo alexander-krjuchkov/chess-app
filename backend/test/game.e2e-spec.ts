@@ -3,6 +3,7 @@ import {
     CanActivate,
     INestApplication,
     UnauthorizedException,
+    ValidationPipe,
 } from '@nestjs/common';
 import * as request from 'supertest';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -66,6 +67,13 @@ describe('GameController (e2e)', () => {
 
         app = moduleFixture.createNestApplication();
         app.setGlobalPrefix('api');
+        app.useGlobalPipes(
+            new ValidationPipe({
+                transform: true,
+                whitelist: true,
+                forbidNonWhitelisted: true,
+            }),
+        );
         await app.init();
 
         gameRepository = connection.getRepository(GameMock);
@@ -178,7 +186,39 @@ describe('GameController (e2e)', () => {
     });
 
     describe('PATCH /api/game/:id/move', () => {
-        // TODO: should return 400 if request is invalid
+        test.each([
+            {
+                body: {},
+                description: 'missing moves field',
+            },
+            {
+                body: { moves: 'not-an-array' },
+                description: 'non-array moves',
+            },
+            {
+                body: { moves: [] },
+                description: 'empty moves array',
+            },
+            {
+                body: { moves: [false] },
+                description: 'non-string in moves',
+            },
+            {
+                body: { moves: [''] },
+                description: 'empty string in moves',
+            },
+        ])(
+            'should return 400 if request body is invalid ($description)',
+            async ({ body }) => {
+                const { id: gameId } = await addGame({ userId: 'user1' });
+
+                authenticateUser({ userId: 'user1' });
+                await request(getAppHttpServer())
+                    .patch(`/api/game/${gameId}/move`)
+                    .send(body)
+                    .expect(400);
+            },
+        );
 
         it('should return 401 if no authentication is provided', async () => {
             const { id: gameId } = await addGame({ userId: 'user1' });
